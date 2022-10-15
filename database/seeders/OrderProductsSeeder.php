@@ -14,46 +14,46 @@ class OrderProductsSeeder extends Seeder
      */
     public function run()
     {
-        $product_orders = [
-            [
-                'user_id'             => '2',
-                'product_id'          => '1',
-                'size_id'             => '1',
-                'order_id'            => '1',
-                'qty'                 => '5',
-                'amount'              => '250',
-                'price'               => '50',
-                'isCheckout'          => '1',
-                'created_at'          => date("Y-m-d H:i:s"),
-                'updated_at'          => date("Y-m-d H:i:s"),
-            ],
-            [
-                'user_id'             => '2',
-                'product_id'          => '2',
-                'size_id'             => '1',
-                'order_id'            => '1',
-                'qty'                 => '5',
-                'amount'              => '250',
-                'price'               => '50',
-                'isCheckout'          => '1',
-                'created_at'          => date("Y-m-d H:i:s"),
-                'updated_at'          => date("Y-m-d H:i:s"),
-            ],
-            [
-                'user_id'             => '2',
-                'product_id'          => '3',
-                'size_id'             => '1',
-                'order_id'            => '1',
-                'qty'                 => '5',
-                'amount'              => '250',
-                'price'               => '50',
-                'isCheckout'          => '1',
-                'created_at'          => date("Y-m-d H:i:s"),
-                'updated_at'          => date("Y-m-d H:i:s"),
-            ],
+        // $product_orders = [
+        //     [
+        //         'user_id'             => '2',
+        //         'product_id'          => '1',
+                
+        //         'order_id'            => '1',
+        //         'qty'                 => '5',
+        //         'amount'              => '250',
+        //         'price'               => '50',
+        //         'isCheckout'          => '1',
+        //         'created_at'          => date("Y-m-d H:i:s"),
+        //         'updated_at'          => date("Y-m-d H:i:s"),
+        //     ],
+        //     [
+        //         'user_id'             => '2',
+        //         'product_id'          => '2',
+                
+        //         'order_id'            => '1',
+        //         'qty'                 => '5',
+        //         'amount'              => '250',
+        //         'price'               => '50',
+        //         'isCheckout'          => '1',
+        //         'created_at'          => date("Y-m-d H:i:s"),
+        //         'updated_at'          => date("Y-m-d H:i:s"),
+        //     ],
+        //     [
+        //         'user_id'             => '2',
+        //         'product_id'          => '3',
+                
+        //         'order_id'            => '1',
+        //         'qty'                 => '5',
+        //         'amount'              => '250',
+        //         'price'               => '50',
+        //         'isCheckout'          => '1',
+        //         'created_at'          => date("Y-m-d H:i:s"),
+        //         'updated_at'          => date("Y-m-d H:i:s"),
+        //     ],
             
-        ];
+        // ];
 
-        OrderProduct::insert($product_orders);
+        // OrderProduct::insert($product_orders);
     }
 }

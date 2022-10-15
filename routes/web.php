@@ -70,5 +70,13 @@ Route::group(['prefix' => 'customer', 'as' => 'customer.', 'namespace' => 'Custo
     Route::put('account', 'HomeController@account_update')->name('account.update');
     Route::put('account/change_password/{user}', 'HomeController@passwordupdate')->name('account.passwordupdate');
 
+    // REVIEW ORDER HISTORY
+    // STORE REVIEW
+    Route::get('review', 'ReviewController@review')->name('review.review');
+
+    // POST
+    Route::get('posts', 'PostController@index')->name('post.index');
+    Route::post('posts_store', 'PostController@store')->name('post.store');
+    Route::get('comments', 'CommentController@store')->name('comment.store');
    
 });

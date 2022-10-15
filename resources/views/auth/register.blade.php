@@ -19,7 +19,7 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
     </div>
 </header>
 
-<section class="py-5  row" style="margin-top: -100px; height: 60vh;">
+<section class="py-5" style="margin-top: -100px; height: 60vh;">
         <div class="justify-content-center col-lg-7 mx-auto">
            <div class="card z-index-0 fadeIn3 fadeInBottom">
               <div class="card-header p-0 position-relative mt-n4 mx-3 z-index-2">
@@ -27,6 +27,11 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
               <div class="card-body">
                 <form method="POST" action="{{ route('register') }}" enctype="multipart/form-data">
                   @csrf
+                      <div class="text-center">
+                        <img src="assets/img/logo.jfif" alt="logo" width="120" height="120">
+                        <br>
+                        <br>
+                      </div>
                       <div class="row">
                         <div class="col-lg-6">
                            <div class="form-group">
@@ -93,8 +98,9 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                       </div>
 
                       <div class="text-center">
-                        <button type="submit" class="btn bg-primary w-80 my-4 mb-2">REGISTER</button>
+                        <button type="submit" class="btn bg-primary w-100 my-4 mb-2">REGISTER</button>
                       </div>
+                      
                       <p class="mt-4 text-sm text-center">
                         Already a member?
                         <a href="/login" class="text-danger font-weight-bold">LOGIN</a>

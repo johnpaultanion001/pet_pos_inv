@@ -18,6 +18,39 @@
                 display: flex; 
                 justify-content: space-between;
             }
+            .picture-container {
+            position: relative;
+            cursor: pointer;
+            }
+            .picture {
+            width: 100%;
+            height: 250px;
+            background-color: #d8d1c9;
+            border: 4px solid transparent;
+            color: #FFFFFF;
+            margin: 5px auto;
+            overflow: hidden;
+            transition: all 0.2s;
+            -webkit-transition: all 0.2s;
+            
+            }
+            .picture:hover {
+            border-color: #2ca8ff;
+            }
+            .picture-src {
+            width: 100%;
+            height: 100%;
+            }
+            .picture input[type="file"] {
+            cursor: pointer;
+            display: block;
+            height: 100%;
+            left: 0;
+            opacity: 0 !important;
+            position: absolute;
+            top: 0;
+            width: 100%;
+            }
             
         </style>
         @yield('styles')
@@ -30,14 +63,7 @@
         <!-- Section-->
         
         <!-- Footer-->
-        <footer class="py-5" style="
-        background: #FBD3E9;  /* fallback for old browsers */
-        background: -webkit-linear-gradient(to right, #BB377D, #FBD3E9);  /* Chrome 10-25, Safari 5.1-6 */
-        background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
-
-        ">
-            <div class="container"><p class="m-0 text-center text-white">Copyright &copy;{{ trans('panel.site_title') }}</p></div>
-        </footer>
+      
 
         <!-- JQuery Scripts -->
         <script src="{{ asset('/admin/vendor/jquery/dist/jquery.min.js') }}"></script>

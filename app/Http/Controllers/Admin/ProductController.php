@@ -39,6 +39,9 @@ class ProductController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'category' => ['required'],
             'image' =>  ['required' , 'mimes:png,jpg,jpeg,svg,bmp,ico', 'max:2040'],
+            'expiration' => ['required','date', 'after:today'],
+            'stock' => ['required','integer','min:1'],
+            'price' => ['required','integer','min:1'],
         ]);
 
         if ($validated->fails()) {
@@ -54,23 +57,11 @@ class ProductController extends Controller
             'category_id' => $request->input('category'),
             'description' => $request->input('description'),
             'image' => $file_name_to_save,
+            'expiration' => $request->input('expiration'),
+            'stock' => $request->input('stock'),
+            'price' => $request->input('price'),
         ]);
 
-        foreach($request->input('size') as $key => $size )
-        {
-            ProductSizePrice::updateOrCreate(
-                [
-                    'product_id'                => $product->id,
-                    'size_id'                   => $size,
-                ],
-                [
-                    'product_id'                => $product->id,
-                    'size_id'                   => $size,
-                    'price'                     => $request->price[$key],
-                    'stock'                     => $request->stock[$key],
-                ]
-            );
-        }
 
         return response()->json(['success' => 'Product Added Successfully.']);
     }
@@ -78,19 +69,8 @@ class ProductController extends Controller
    
     public function edit(Product $product)
     {
-        foreach($product->products_sizes_prices()->get() as $psp){
-            $sps[] = array(
-                'size'         => $psp->size->id,
-                'size_name'         => $psp->size->name,
-                'price'        => $psp->price,
-                'stock'        => $psp->stock, 
-                'sizes'        => $sizes = Size::latest()->get(),
-            );
-        }
-
         return response()->json([
             'result' =>   $product,
-            'sps'    => $sps,
         ]);
     }
 

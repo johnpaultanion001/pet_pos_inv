@@ -1,5 +1,5 @@
 <?php
 
 return [
-    'site_title' => 'MILK TEA',
+    'site_title' => 'PET SHOP',
 ];

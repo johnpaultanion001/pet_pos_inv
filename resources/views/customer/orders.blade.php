@@ -33,9 +33,11 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                                     <h6 class="mb-0">{{$order->product->name}}</h6>
                                     <h6 class="mb-0 text-primary">₱ {{ number_format($order->amount ?? '' , 2, '.', ',') }}</h6>
                                     <p class="mb-0 text-xs text-dark font-weight-bold">QTY: {{$order->qty ?? ''}}</p>
-                                    <p class="mb-0 text-xs text-dark font-weight-bold">SIZE: {{$order->size->name ?? ''}}</p>
+                                    <p class="mb-0 text-xs text-dark font-weight-bold">PRICE: {{$order->price ?? ''}}</p>
                                     <p class="mb-0 text-xs text-dark font-weight-bold">{{ $order->created_at->format('M j, h:i A') }}</p>
-                                    
+                                    @if($order->isPromo == '1')
+                                        <span class="badge bg-warning">BUY 1 TAKE 1</span>
+                                    @endif 
                                 </div>
                                 <div class="ms-auto">
                                     <button class="btn btn-success mb-2 btn-sm edit_order" order_id="{{$order->id}}">
@@ -121,14 +123,12 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                             <div class="text-center">
                                 <!-- Product name-->
                                 <h5 class="fw-bolder" id="product_name">Product Name</h5>
-                               
+                                <small class="fw-bolder" id="description">Description</small> <br>
+                                <small class="fw-bolder text-danger" id="price">Price: ₱ 150</small>
+                                <small class="fw-bolder text-danger" id="stock">Stock: 50</small>
+                                <br>
+                                <small class="fw-bolder text-danger" id="expiration">Expiration: 50</small>
                             </div>
-                                <div class="form-group">
-                                    <h6>Select Size <span class="text-danger">*</span></h6>
-                                    <div class="btn-group btn-group-toggle" id="sps" data-toggle="buttons">
-                                        
-                                    </div>
-                                </div>
                                 <div class="form-group mt-2">
                                   <h6>QTY <span class="text-danger">*</span></h6>
                                   <input type="number" name="qty" id="qty" class="form-control disabled" onfocus="focused(this)" onfocusout="defocused(this)">
@@ -176,6 +176,18 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                     if(key == 'name'){
                         $('#product_name').text(value)
                     }
+                    if(key == 'description'){
+                        $('#description').text(value)
+                    }
+                    if(key == 'price'){
+                        $('#price').text(value)
+                    }
+                    if(key == 'stock'){
+                        $('#stock').text(value)
+                    }
+                    if(key == 'expiration'){
+                        $('#expiration').text(value)
+                    }
                     if(key == 'category'){
                         $('#category').text(value)
                     }
@@ -185,13 +197,6 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                     if(key == 'qty'){
                         $('#qty').val(value);
                     }
-                    var sps = "";
-                    $.each(data.sps, function(key,value){
-                            sps += '<label class="btn btn-secondary '+value.selected_size_active+'">';
-                                sps += '<input type="radio" name="size" autocomplete="off" value="'+value.size_id+'" '+value.selected_size+'> ' + value.size + ' ₱ ' + value.price + ' STOCK: ('+value.stock+')';
-                            sps += '</label>'; 
-                    })
-                    $('#sps').empty().append(sps);
 
                 })
             },

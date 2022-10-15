@@ -5,32 +5,52 @@ namespace App\Http\Controllers\Customer;
 use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
+use App\Models\Review;
 use App\Models\OrderProduct;
 use App\Models\Order;
 use App\Models\ProductSizePrice;
 use Validator;
+use Carbon\Carbon;
+
 
 class OrderController extends Controller
 {
     public function view(Product $product){
-        foreach($product->products_sizes_prices()->get() as $psp){
-            $sps[] = array(
-                'size_id'      => $psp->size->id,
-                'size'         => $psp->size->name,
-                'price'        => $psp->price,
-                'stock'        => $psp->stock, 
-            );
+
+        if($product->expiration < Carbon::now()->addMonths(3)){
+            $promo = "1";
+        }else{
+            $promo = "0";
         }
 
         $product_d = [
             'name'         => $product->name,
             'category'     => $product->category->name,
             'image'        => $product->image,
+            'stock'        => 'Stock: '. $product->stock,
+            'price'        => 'Price: ₱ '. $product->price,
+            'description'  => $product->description ?? '',
+            'expiration'  => 'Expiration: ₱ '.$product->expiration->format('M j , Y'),
+            'exp'        => $promo ?? '',
+            'isStar'     => $product->reviewsIsStar(),
         ];
+
+        $reviews = Review::where('product_id', $product->id)
+                            ->latest()
+                            ->get();
+
+        foreach($reviews as $review){
+            $reviews1[] = array(
+                'name'              => $review->user->name, 
+                'review'            => $review->review,
+                'isStar'            => $review->isStar,
+                'date_time'         => $review->created_at->diffForHumans(),
+            );
+        }
 
         return response()->json([
             'product'      =>  $product_d,
-            'sps'          =>  $sps,
+            'reviews'  => $reviews1 ?? '',
         ]);
 
     }
@@ -46,29 +66,33 @@ class OrderController extends Controller
             return response()->json(['errors' => $validated->errors()]);
         }
 
-        $sps = ProductSizePrice::where('product_id', $product->id)
-                                 ->where('size_id', $request->input('size') )
-                                 ->first();
+        if($product->expiration < Carbon::now()->addMonths(3)){
+            $promo = true;
+        }else{
+            $promo = false;
+        }
 
-        if($request->input('qty') > $sps->stock){
+
+        if($request->input('qty') > $product->stock){
             return response()->json(['errorstock' => 'Must be less than the stock.']);
         }
                         
-        $amount = $sps->price * $request->input('qty');
+        $amount = $product->price * $request->input('qty');
+
         OrderProduct::updateOrcreate(
             [
                 'user_id'    => auth()->user()->id,
                 'product_id' => $product->id,
-                'size_id'    => $sps->size->id,
                 'isCheckout' => false,
             ],
             [
                 'user_id'    => auth()->user()->id,
                 'product_id' => $product->id,
-                'size_id'    => $sps->size->id,
+                'expiration'    => $product->expiration,
                 'qty'        => $request->input('qty'),
                 'amount'     => $amount,
-                'price'      => $sps->price,
+                'price'      => $product->price,
+                'isPromo'    => $promo,
             ]
         );
 
@@ -85,27 +109,22 @@ class OrderController extends Controller
         return view('customer.orders',compact('orders'));
     }
     public function edit(OrderProduct $order){
-        foreach($order->product->products_sizes_prices()->get() as $psp){
-            $sps[] = array(
-                'size_id'       => $psp->size->id,
-                'size'          => $psp->size->name,
-                'price'         => $psp->price,
-                'stock'         => $psp->stock, 
-                'selected_size_active' => $psp->size->id == $order->size->id ? 'active':'',
-                'selected_size' => $psp->size->id == $order->size->id ? 'checked':'',
-            );
-        }
+    
 
         $orders = [
             'name'         => $order->product->name,
             'category'     => $order->product->category->name,
             'image'        => $order->product->image,
             'qty'          => $order->qty,
+
+            'stock'        => 'Stock: '. $order->product->stock,
+            'price'        => 'Price: ₱ '. $order->price,
+            'description'  =>  $order->product->description ?? '',
+            'expiration'  => 'Expiration: ₱ '.$order->product->expiration->format('M j , Y'),
         ];
 
         return response()->json([
             'order'      =>  $orders,
-            'sps'        =>  $sps,
         ]);
 
     }
@@ -121,21 +140,17 @@ class OrderController extends Controller
             return response()->json(['errors' => $validated->errors()]);
         }
 
-        $sps = ProductSizePrice::where('product_id', $order->product->id)
-                                 ->where('size_id', $request->input('size') )
-                                 ->first();
 
-        if($request->input('qty') > $sps->stock){
+        if($request->input('qty') > $order->product->stock){
             return response()->json(['errorstock' => 'Must be less than the stock.']);
         }
                         
-        $amount = $sps->price * $request->input('qty');
+        $amount = $order->product->price * $request->input('qty');
         OrderProduct::find($order->id)->update(
             [
-                'size_id'    => $sps->size->id,
                 'qty'        => $request->input('qty'),
                 'amount'     => $amount,
-                'price'      => $sps->price,
+                'price'      => $order->product->price,
             ]
         );
 
@@ -165,23 +180,42 @@ class OrderController extends Controller
             'shipping_option' => $request->get('shipping')
         ]);
         foreach($orderproducts as $order){
-            $sps = ProductSizePrice::where('product_id', $order->product->id)
-                                 ->where('size_id', $order->size->id)
-                                 ->first();
-            if($order->qty > $sps->stock){
-                Order::find($orders->id)->delete();
-                return response()->json(['no_stock' => 'Out of stock <br>
-                                                        Product: '.$order->product->name.
-                                                        '<br> Qty: '.$order->qty. 
-                                                        '<br> Available Stock: '.$sps->stock]);
+            //but 1 take 1
+            if($order->product->expiration < Carbon::now()->addMonths(3)){
+                $order_qty = $order->qty * 2;
+                if($order_qty > $order->product->stock){
+                    Order::find($orders->id)->delete();
+                    return response()->json(['no_stock' => 'Out of stock <br>
+                                                            Product: '.$order->product->name.
+                                                            '<br> Qty: '.$order_qty. 
+                                                            '<br> Available Stock: '.$order->product->stock]);
+                }else{
+                    Product::where('id', $order->product_id)->decrement('stock', $order_qty);
+                    OrderProduct::where('id', $order->id)
+                                    ->update([
+                                        'order_id' => $orders->id,
+                                        'isCheckout' => true,
+                                        'isPromo' => true,
+                                    ]);
+                }
             }else{
-                $sps->decrement('stock', $order->qty);
-                OrderProduct::where('id', $order->id)
-                                ->update([
-                                    'order_id' => $orders->id,
-                                    'isCheckout' => true,
-                                ]);
+                if($order->qty > $order->product->stock){
+                    Order::find($orders->id)->delete();
+                    return response()->json(['no_stock' => 'Out of stock <br>
+                                                            Product: '.$order->product->name.
+                                                            '<br> Qty: '.$order->qty. 
+                                                            '<br> Available Stock: '.$order->product->stock]);
+                }else{
+                    Product::where('id', $order->product_id)->decrement('stock', $order->qty);
+                    OrderProduct::where('id', $order->id)
+                                    ->update([
+                                        'order_id' => $orders->id,
+                                        'isCheckout' => true,
+                                    ]);
+                }
             }
+            
+
         }
         return response()->json(['success' => 'Ordered Successfully Checkout.']);
         
@@ -202,10 +236,19 @@ class OrderController extends Controller
             ]);
 
         foreach($order->orderproducts()->get() as $order_p){
-            ProductSizePrice::where('product_id', $order_p->product->id)
-                        ->where('size_id', $order_p->size->id)
-                        ->increment('stock', $order_p->qty);
+            if($order_p->product->expiration < Carbon::now()->addMonths(3)){
+                $order_qty = $order_p->qty * 2;
+                Product::where('id', $order_p->product->id)
+                    ->increment('stock', $order_qty );
+            }else{
+                Product::where('id', $order_p->product->id)
+                    ->increment('stock', $order_p->qty);
+            }
         }
+
+        $order->orderproducts()->update([
+            'status'    => 'CANCELLED',
+        ]);
 
 
         return response()->json(['success' => 'Successfully Cancelled.']);

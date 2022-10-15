@@ -39,7 +39,11 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                                             <div class="d-flex flex-column">
                                                 <h6 class="mb-1 text-dark text-sm">
                                                     @foreach($order->orderproducts as $product_order)
-                                                        <span class="badge bg-warning">{{$product_order->qty ?? ''}} {{$product_order->product->name ?? ''}} * {{$product_order->price ?? ''}} = {{$product_order->amount ?? ''}}</span> <br>
+                                                        <span class="badge bg-warning">{{$product_order->qty ?? ''}} {{$product_order->product->name ?? ''}} * {{$product_order->price ?? ''}} = {{$product_order->amount ?? ''}}</span>
+                                                        @if($product_order->isPromo == '1')
+                                                            <span class="badge bg-warning">BUY 1 TAKE 1</span>
+                                                        @endif
+                                                        <br>
                                                     @endforeach
                                                 </h6>
                                                 <h6 class="text-xs text-uppercase"> {{ $order->created_at->format('M j , Y h:i A') }}</h6>
@@ -60,7 +64,6 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                                     <h6 class="mb-0">NO PENDING ORDER FOUND</h6>
                                 </div>
                                 @endforelse
-                                
                             </ul>
                     </div>
             </div>
@@ -86,7 +89,60 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                                             <div class="d-flex flex-column">
                                                 <h6 class="mb-1 text-dark text-sm">
                                                     @foreach($order->orderproducts as $product_order)
-                                                        <span class="badge bg-success">{{$product_order->qty ?? ''}} {{$product_order->product->name ?? ''}} * {{$product_order->price ?? ''}} = {{$product_order->amount ?? ''}}</span> <br>
+                                                        <span class="badge bg-success">{{$product_order->qty ?? ''}} {{$product_order->product->name ?? ''}} * {{$product_order->price ?? ''}} = {{$product_order->amount ?? ''}}</span> 
+                                                        @if($product_order->isPromo == '1')
+                                                            <span class="badge bg-warning">BUY 1 TAKE 1</span>
+                                                            
+                                                        @endif                
+                                                        <br> 
+                                                        @php
+                                                            $isStar = App\Models\Review::where('order_id', $product_order->order_id)->where('product_id', $product_order->product->id)
+                                                                                            ->where('user_id', auth()->user()->id)->first();
+                                                        @endphp
+                                                        <a id="reviews_count{{$product_order->product->id}}" class="link-primary" data-toggle="collapse" href="#collapseExample{{$product_order->product->id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                            {{$isStar == null ? 'Add your review':'Edit your review'}}   
+                                                        </a>      
+                                                         <br>
+                                                        <div class="collapse mt-3" id="collapseExample{{$product_order->product->id}}">
+                                                            <div class="card card-body text-left">
+                                                                <form method="post" class="myReviewForm">
+                                                                    @csrf
+                                                                    <div class="input-group">
+                                                                        
+                                                                        <i class="bi bi-star-fill m-3 isStar {{$isStar->isStar ?? '' == true ? 'text-warning':''}}" product_id="{{$product_order->product->id}}" id="isStarIcon{{$product_order->product->id}}" style="cursor: pointer;"></i>
+                                                                        <input type="hidden" class="form-control" id="isStar{{$product_order->product->id}}" name="isStar"  value="{{$isStar->isStar ?? '0'}}" readonly>
+                                                                        <input type="text" class="form-control review" name="review" placeholder="Enter a message" required>
+                                                                        <input type="hidden" class="form-control" name="product_id" value="{{$product_order->product->id}}" readonly>
+                                                                        <input type="hidden" class="form-control" name="order_id" value="{{$product_order->order_id}}" readonly>
+                                                                        <div class="input-group-append">
+                                                                            <span class="input-group-text"><button  type="submit" class="btn text-primary" style="background-color:transparent;" >SUBMIT</button></span>
+                                                                        </div>
+                                                                    </div>
+                                                                </form>
+                                                                <div id="review_section{{$product_order->product->id}}" style="max-height: 300px; overflow-y : auto;">
+                                                                        @if($product_order->product->reviews()->count() < 1)
+                                                                        <hr>
+                                                                            <b> NO REVIEW FOUND</b>  <br>
+                                                                        @else
+                                                                        @foreach($product_order->product->reviews()->get() as $review)
+                                                                        <hr>
+                                                                            <div class="row">
+                                                                                <div class="col-2">
+                                                                                    <i class="bi bi-star-fill m-3 {{$review->isStar == true ? 'text-warning':''}}"></i>
+                                                                                </div>
+                                                                                <div class="col-10">
+                                                                                    <b> {{$review->user->name ?? ''}}</b>  <br>
+                                                                                    <h6>{{$review->review ?? ''}}</h6> <br>
+                                                                                    <small class="mb-0">{{$review->created_at->diffForHumans()}}</small>
+                                                                                </div>
+                                                                            </div>
+                                                                           
+                                                                        @endforeach
+                                                                    @endif
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                        <br>                      
                                                     @endforeach
                                                 </h6>
                                                 <h6 class="text-xs text-uppercase"> {{ $order->created_at->format('M j , Y h:i A') }}</h6>
@@ -96,7 +152,7 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                                                 <h6  class="text-s mt-2">SUBTOTAL: <span class="text-primary"> ₱  {{number_format($order->orderproducts->sum->amount?? '' , 2, '.', ',')}}</span> </h6>
                                                 <h6  class="text-s mt-2">TOTAL: <span class="text-primary"> ₱  {{number_format($order->orderproducts->sum->amount?? '' , 2, '.', ',')}}</span> </h6>
                                                 <h6  class="text-s mt-2 text-uppercase">SHIPPING OPTIONS:   <span class="badge bg-primary"> {{$order->shipping_option}} </span></h6>
-                                                
+                                               
                                             </div>
                                         </div>
                                         
@@ -174,6 +230,18 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
 
 @section('script')
 <script>
+    
+    $(document).on('click', '.isStar', function(){
+        var id = $(this).attr('product_id');
+        if($('#isStar'+id).val() == 1){
+            $('#isStar'+id).val('0');
+            $('#isStarIcon'+id).removeClass('text-warning');
+        }else{
+            $('#isStar'+id).val('1');
+            $('#isStarIcon'+id).addClass('text-warning');
+        }
+    });
+
    $(document).on('click', '.cancel', function(){
         var id = $(this).attr('cancel');
         $.confirm({
@@ -228,6 +296,47 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
             }
         });
     });
+
+    $('.myReviewForm').on('submit', function(event){
+        event.preventDefault();
+
+        $.ajax({
+            url: "/customer/review",
+            method:"GET",
+            data:$(this).serialize(),
+            dataType:"json",
+            beforeSend:function(){
+
+            },
+            success:function(data){
+                var reviews = '';
+                $.each(data.reviews, function(key,value){
+                    reviews += '<hr>';
+                    reviews += '<div class="row">';
+                        reviews += '<div class="col-2">'
+                            if(value.isStar == true){
+                                reviews += '<i class="bi bi-star-fill m-3 text-warning"></i>'
+                            }else{
+                                reviews += '<i class="bi bi-star-fill m-3"></i>'
+                            }
+                        reviews += '</div>'
+                        reviews += '<div class="col-10">'
+                            reviews += '<b>'+value.name+'</b> <br>';
+                            reviews += '<h6>'+value.review+'</h6> <br>';
+                            reviews += '<h6>'+value.date_time+'</h6> <br>';
+                        reviews += '</div>'
+                    reviews += '</div>';
+
+                    
+                                  
+                });
+                $('#review_section'+data.product_id).empty().append(reviews);
+                $('.review').val('');
+            }
+        });
+    });
+
+
 </script>
 @endsection
 

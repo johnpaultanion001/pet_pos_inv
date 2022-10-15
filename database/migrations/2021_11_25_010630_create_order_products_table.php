@@ -17,12 +17,14 @@ class CreateOrderProductsTable extends Migration
             $table->id();
             $table->string('user_id');
             $table->string('product_id');
-            $table->string('size_id');
+            $table->date('expiration');
             $table->string('order_id')->nullable();
             $table->integer('qty');
             $table->float('amount');
             $table->float('price');
             $table->boolean('isCheckout')->default(false);
+            $table->boolean('isPromo')->default(false);
+            $table->string('status')->default('PENDING');
             $table->timestamps();
         });
     }

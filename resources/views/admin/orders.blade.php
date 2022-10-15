@@ -62,6 +62,9 @@
                                          
                                             @foreach($order->orderproducts as $product_order)
                                                 <span class="badge bg-success">{{$product_order->qty}} {{$product_order->product->name}} * {{$product_order->price}} = {{ number_format($product_order->amount ?? '' , 2, '.', ',') }} </span>
+                                                @if($product_order->isPromo == '1')
+                                                    <span class="badge bg-warning">BUY 1 TAKE 1</span>
+                                                @endif    
                                                 <br>
                                             @endforeach
                                             

@@ -44,7 +44,9 @@
                                     
                                     <th scope="col">NAME</th>
                                     <th scope="col">DESCRIPTION</th>
-                                    <th scope="col">SIZE | PRICE | STOCK</th>
+                                    <th scope="col">EXPIRATION</th>
+                                    <th scope="col">STOCK</th>
+                                    <th scope="col">PRICE</th>
                                     <th scope="col">CREATED AT</th>
                                 </tr>
                             </thead>
@@ -73,18 +75,13 @@
                                             {{\Illuminate\Support\Str::limit($product->description,50)}}
                                         </td>
                                         <td>
-                                            <table class="table">
-                                               
-                                                <tbody>
-                                                @foreach($product->products_sizes_prices()->get() as $p)
-                                                    <tr>
-                                                        <td>{{$p->size->name}}</td>
-                                                        <td>{{$p->price}}</td>
-                                                        <td>{{$p->stock}}</td>
-                                                    </tr>
-                                                @endforeach
-                                                </tbody>
-                                            </table>
+                                            {{ $product->expiration->format('M j , Y') }}
+                                        </td>
+                                        <td>
+                                            {{ $product->stock ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{ $product->price ?? '' }}
                                         </td>
                                         <td>
                                             {{ $product->created_at->format('M j , Y h:i A') }}
@@ -123,15 +120,7 @@
                                 </span>
                             </div>
                         </div>
-                        <div class="col-sm-6">
-                            <div class="form-group">
-                                <label class="form-label">Description: </label>
-                                <input type="text" name="description" id="description" class="form-control disabled" >
-                                <span class="invalid-feedback" role="alert">
-                                    <strong id="error-description"></strong>
-                                </span>
-                            </div>
-                        </div>
+                       
                         <div class="col-sm-6">
                             <div class="form-group">
                                 <label class="form-label">Category: <span class="text-danger">*</span></label>
@@ -142,8 +131,46 @@
                                 </select>
                             </div>
                         </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label">Expiration: </label>
+                                <input type="date" name="expiration" id="expiration" class="form-control disabled" >
+                                <span class="invalid-feedback" role="alert">
+                                    <strong id="error-expiration"></strong>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label">Stock: </label>
+                                <input type="number" name="stock" id="stock" class="form-control disabled" >
+                                <span class="invalid-feedback" role="alert">
+                                    <strong id="error-stock"></strong>
+                                </span>
+                            </div>
+                        </div>
+                        <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label">Price: </label>
+                                <input type="number" name="price" id="price" class="form-control disabled" >
+                                <span class="invalid-feedback" role="alert">
+                                    <strong id="error-price"></strong>
+                                </span>
+                            </div>
+                        </div>
+                      
 
                         <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label">Description: </label>
+                                <input type="text" name="description" id="description" class="form-control disabled" >
+                                <span class="invalid-feedback" role="alert">
+                                    <strong id="error-description"></strong>
+                                </span>
+                            </div>
+                        </div>
+                        
+                        <div class="col-sm-12">
                             <div class="form-group" id="image-section">
                                 <label class="form-label">Image: <span class="text-danger">*</span></label>
                                 <div class="input-group input-group-outline my-3">
@@ -168,38 +195,7 @@
                                 </div>
                             </div>
                         </div>
-                        <div class="col-md-12">
-                            <div class="form-group" id="productsSizePrice">
-                                <div class="parentContainer">
-                                    <div class="row childrenContainer">
-                                        <div class="col-sm-12 row">
-                                            <div class="col-sm-3">
-                                                <label class="form-label">Size: <span class="text-danger">*</span></label>
-                                                <select name="size[]" id="size"  style="width: 100%; height: 45px;" required>
-                                                    @foreach($sizes as $size)
-                                                        <option value="{{$size->id}}">{{$size->name}}</option>
-                                                    @endforeach
-                                                </select>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <label class="form-label">Price: <span class="text-danger">*</span></label>
-                                                <input type="number" name="price[]" id="price" class="form-control" required>
-                                            </div>
-                                            <div class="col-sm-3">
-                                                <label class="form-label">Stock: <span class="text-danger">*</span></label>
-                                                <input type="number" name="stock[]" id="stock" class="form-control" required>
-                                            </div>
-                                            <div class="col-sm-3">
-                                            <br>
-                                                <button type="button" name="addParent" id="addParent" class="mt-2 addParent btn btn-primary">            
-                                                    <i class="fas fa-plus-circle"></i>        
-                                                </button>
-                                            </div>
-                                        </div>
-                                    </div>
-                                </div>
-                            </div>
-                        </div>
+                     
                         <input type="hidden" name="action" id="action" value="Add" />
                         <input type="hidden" name="hidden_id" id="hidden_id" />
                         
@@ -368,47 +364,10 @@ $(document).on('click', '.edit', function(){
                 if(key == 'image'){
                     $('#current_image').attr("src", '/assets/img/products/'  + value);
                 }
-                
-                var sps = "";
-                 $.each(data.sps, function(key,value){
-                    sps += '<div class="parentContainer">';
-                    sps += '<div class="row childrenContainer">';
-                    sps += '<div class="col-sm-12 row">';
-                        sps += '<div class="col-sm-3">';
-                            sps += '<label class="form-label">Size: <span class="text-danger">*</span></label>';
-                            sps += '<select name="size[]" id="size"  style="width: 100%; height: 45px;" required>';
-                                sps += '<option value="'+value.size+'">'+value.size_name+'</option>';
-                            $.each(value.sizes, function(key,val){
-                                sps += '<option value="'+val.id+'">'+val.name+'</option>';
-                            });
-                            sps += '</select>';
-                        sps += '</div>';
-                        sps += '<div class="col-sm-3">';
-                            sps += '<label class="form-label">Price: <span class="text-danger">*</span></label>';
-                            sps += '<input type="number" name="price[]" id="price" class="form-control" value="'+value.price+'" required>';
-                        sps += '</div>';
-                        sps += '<div class="col-sm-3">';
-                            sps += '<label class="form-label">Stock: <span class="text-danger">*</span></label>';
-                            sps += '<input type="number" name="stock[]" id="stock" class="form-control" value="'+value.stock+'" required>';
-                        sps += '</div>';
-                        sps += '<div class="col-sm-3">';
-                            sps += '<br>';
-                            if (key === 0) {
-                                sps += '<button type="button" name="addParent" id="addParent" class="mt-2 addParent btn btn-primary">';
-                                    sps += '<i class="fas fa-plus-circle"></i>';
-                                sps += '</button>';
-                            }else{
-                                sps += '<button type="button" class="btn btn-danger removeParent">';
-                                        sps += '<i class="fa fa-minus-circle" aria-hidden="true"></i>';
-                                sps += '</button>';
-                            }
-                        sps += '</div>';
-                    sps += '</div>';
-                    sps += '</div>';
-                    sps += '</div>';
-              })
-              $('#productsSizePrice').empty().append(sps);
-
+                if(key == 'expiration'){
+                    var exp = moment(value).format('YYYY-MM-DD');
+                    $("#expiration").val(exp);
+                }
             })
             $('#hidden_id').val(id);
             $('#action_button').val('Update');
@@ -478,49 +437,6 @@ $('#formModal').on('shown.bs.modal', function () {
     $('#added_stock').focus();
 })  
 
-$(document).on('click', '.addParent', function () {
-  var html = '';
-  html += '<div class="parentContainer">';
-    html += '<div class="row childrenContainer">';
-
-        html += '<div class="col-sm-12 row">';
-            html += '<div class="col-sm-3">';
-                html += '<select name="size[]" id="size"  style="width: 100%; height: 45px;">';
-                    html += '@foreach($sizes as $size)';
-                        html += '<option value="{{$size->id}}">{{$size->name}}</option>';
-                    html += '@endforeach';
-                html += '</select>';
-            html += '</div>';
-
-            html += '<div class="col-sm-3">';
-                html += '<input type="number" name="price[]" id="price" class="form-control" required>';
-            html += '</div>';
-
-            html += '<div class="col-sm-3">';
-                html += '<input type="number" name="stock[]" id="stock" class="form-control" required>';
-            html += '</div>';
-            
-            html += '<div class="col-sm-3">';
-                html += '<button type="button" class="btn btn-danger removeParent">';
-                    html += '<i class="fa fa-minus-circle" aria-hidden="true"></i>';
-                html += '</button>';
-            html += '</div>';
-        html += '</div>';
-    html += '</div>';
-  html += '</div>';
-
-  $(this)
-    .parent()
-    .parent()
-    .parent()
-    .parent()
-    .append(html);
-    
-});
-$(document).on('click', '.removeParent', function () {
-  $(this).closest('#inputFormRow').remove();
-  $(this).parent().parent().parent().remove();
-});
 
 
 

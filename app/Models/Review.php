@@ -5,7 +5,7 @@ namespace App\Models;
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
 
-class OrderProduct extends Model
+class Review extends Model
 {
     use HasFactory;
 
@@ -13,21 +13,16 @@ class OrderProduct extends Model
         'user_id',
         'product_id',
         'order_id',
-        'qty',
-        'price',
-        'expiration',
-        'status',
-        'amount',
-        'isPromo',
+        'isStar',
+        'review',
     ];
 
     public function product()
     {
         return $this->belongsTo(Product::class, 'product_id');
     }
-   
-    public function order()
+    public function user()
     {
-        return $this->belongsTo(Order::class, 'order_id');
+        return $this->belongsTo(User::class, 'user_id');
     }
 }

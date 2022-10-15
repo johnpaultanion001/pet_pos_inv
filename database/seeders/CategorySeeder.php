@@ -17,13 +17,13 @@ class CategorySeeder extends Seeder
     {
         $categories = [
             [
-                'name'              => 'Milk Tea',
+                'name'              => 'DOG FOOD',
                 
                 'created_at'          => date("Y-m-d H:i:s"),
                 'updated_at'          => date("Y-m-d H:i:s"),
             ],
             [
-                'name'             => 'Food',
+                'name'             => 'CAT FOOD',
                 
                 'created_at'          => date("Y-m-d H:i:s"),
                 'updated_at'          => date("Y-m-d H:i:s"),

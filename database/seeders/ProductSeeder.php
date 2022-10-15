@@ -18,317 +18,144 @@ class ProductSeeder extends Seeder
         $products = [
             [   
                 'id'              => '1',
-                'image'           => 'WINTERMELON.jpg',
-                'name'            => 'WINTERMELON',
+                'image'           => 'p1.png',
+                'name'            => 'Sample Product',
                 'category_id'     => '1',
-                'description'     => 'Sample Product',
-               
+                'description'     => 'This is sample product',
+                'expiration'      => '2023-09-21',
+                'price'           => '150',
+                'stock'           => '50',
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ],
             [   
                 'id'              => '2',
-                'image'           => 'OKINAWA.jpg',
-                'name'            => 'OKINAWA',
-                'category_id'     => '1',
-                'description'     => 'Sample Product',
-               
+                'image'           => 'p2.png',
+                'name'            => 'Sample Product',
+                'category_id'     => '2',
+                'description'     => 'This is sample product',
+                'expiration'      => '2023-09-21',
+                'price'           => '150',
+                'stock'           => '50',
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ],
             [   
                 'id'              => '3',
-                'image'           => 'HOKKAIDO.jpg',
-                'name'            => 'HOKKAIDO',
+                'image'           => 'p3.png',
+                'name'            => 'Sample Product',
                 'category_id'     => '1',
-                'description'     => 'Sample Product',
-               
+                'description'     => 'This is sample product',
+                'expiration'      => '2023-09-21',
+                'price'           => '150',
+                'stock'           => '50',
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ],
             [   
                 'id'              => '4',
-                'image'           => 'MATCHA.jpg',
-                'name'            => 'MATCHA',
-                'category_id'     => '1',
-                'description'     => 'Sample Product',
-               
+                'image'           => 'p1.png',
+                'name'            => 'Sample Product',
+                'category_id'     => '2',
+                'description'     => 'This is sample product',
+                'expiration'      => '2023-09-21',
+                'price'           => '150',
+                'stock'           => '50',
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ],
             [   
                 'id'              => '5',
-                'image'           => 'CHOCOLATE.jpg',
-                'name'            => 'CHOCOLATE ',
+                'image'           => 'p2.png',
+                'name'            => 'Sample Product',
                 'category_id'     => '1',
-                'description'     => 'Sample Product',
-               
+                'description'     => 'This is sample product',
+                'expiration'      => '2023-09-21',
+                'price'           => '150',
+                'stock'           => '50',
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ],
             [   
                 'id'              => '6',
-                'image'           => 'DARK BEL CHOCO.jpg',
-                'name'            => 'DARK BEL CHOCO',
+                'image'           => 'p3.png',
+                'name'            => 'Sample Product',
                 'category_id'     => '1',
-                'description'     => 'Sample Product',
-               
+                'description'     => 'This is sample product',
+                'expiration'      => '2023-09-21',
+                'price'           => '150',
+                'stock'           => '50',
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ],
             [   
                 'id'              => '7',
-                'image'           => 'CARAMEL SUGAR.jpg',
-                'name'            => 'CARAMEL SUGAR',
+                'image'           => 'p2.png',
+                'name'            => 'Sample Product',
                 'category_id'     => '1',
-                'description'     => 'Sample Product',
-               
+                'description'     => 'This is sample product',
+                'expiration'      => '2023-09-21',
+                'price'           => '150',
+                'stock'           => '50',
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ],
             [   
                 'id'              => '8',
-                'image'           => 'SALTED CARAMEL.jpg',
-                'name'            => 'SALTED CARAMEL',
+                'image'           => 'p3.png',
+                'name'            => 'Sample Product',
                 'category_id'     => '1',
-                'description'     => 'Sample Product',
-               
+                'description'     => 'This is sample product',
+                'expiration'      => '2023-09-21',
+                'price'           => '150',
+                'stock'           => '50',
                 'created_at' => date("Y-m-d H:i:s"),
                 'updated_at' => date("Y-m-d H:i:s"),
             ],
+            [   
+                'id'              => '9',
+                'image'           => 'p3.png',
+                'name'            => 'Sample Product',
+                'category_id'     => '1',
+                'description'     => 'This is sample product',
+                'expiration'      => '2022-10-06',
+                'price'           => '150',
+                'stock'           => '50',
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
+            ],
+            [   
+                'id'              => '10',
+                'image'           => 'p2.png',
+                'name'            => 'Sample Product',
+                'category_id'     => '1',
+                'description'     => 'This is sample product',
+                'expiration'      => '2022-11-06',
+                'price'           => '150',
+                'stock'           => '50',
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
+            ],
+            [   
+                'id'              => '11',
+                'image'           => 'p3.png',
+                'name'            => 'Sample Product',
+                'category_id'     => '1',
+                'description'     => 'This is sample product',
+                'expiration'      => '2022-12-06',
+                'price'           => '150',
+                'stock'           => '50',
+                'created_at' => date("Y-m-d H:i:s"),
+                'updated_at' => date("Y-m-d H:i:s"),
+            ],
+
+
+            
 
         ];
 
-        $productssizesprices = [
-            [
-                'product_id'           => '1',
-                'size_id'           => '1',
-                'price'           => '50',
-                'stock'           => '50',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-            [
-                'product_id'           => '1',
-                'size_id'           => '2',
-                'price'           => '70',
-                'stock'           => '50',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-            [
-                'product_id'           => '1',
-                'size_id'           => '3',
-                'price'           => '50',
-                'stock'           => '90',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-
-            [
-                'product_id'           => '2',
-                'size_id'           => '1',
-                'price'           => '50',
-                'stock'           => '50',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-            [
-                'product_id'           => '2',
-                'size_id'           => '2',
-                'price'           => '70',
-                'stock'           => '50',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-            [
-                'product_id'           => '2',
-                'size_id'           => '3',
-                'price'           => '50',
-                'stock'           => '90',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-
-            [
-                'product_id'           => '3',
-                'size_id'           => '1',
-                'price'           => '50',
-                'stock'           => '50',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-            [
-                'product_id'           => '3',
-                'size_id'           => '2',
-                'price'           => '70',
-                'stock'           => '50',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-            [
-                'product_id'           => '3',
-                'size_id'           => '3',
-                'price'           => '50',
-                'stock'           => '90',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-
-            [
-                'product_id'           => '4',
-                'size_id'           => '1',
-                'price'           => '50',
-                'stock'           => '50',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-            [
-                'product_id'           => '4',
-                'size_id'           => '2',
-                'price'           => '70',
-                'stock'           => '50',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-            [
-                'product_id'           => '4',
-                'size_id'           => '3',
-                'price'           => '50',
-                'stock'           => '90',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-
-            [
-                'product_id'           => '5',
-                'size_id'           => '1',
-                'price'           => '50',
-                'stock'           => '50',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-            [
-                'product_id'           => '5',
-                'size_id'           => '2',
-                'price'           => '70',
-                'stock'           => '50',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-            [
-                'product_id'           => '5',
-                'size_id'           => '3',
-                'price'           => '50',
-                'stock'           => '90',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-
-            [
-                'product_id'           => '6',
-                'size_id'           => '1',
-                'price'           => '50',
-                'stock'           => '50',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-            [
-                'product_id'           => '6',
-                'size_id'           => '2',
-                'price'           => '70',
-                'stock'           => '50',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-            [
-                'product_id'           => '6',
-                'size_id'           => '3',
-                'price'           => '50',
-                'stock'           => '90',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-
-            [
-                'product_id'           => '7',
-                'size_id'           => '1',
-                'price'           => '50',
-                'stock'           => '50',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-            [
-                'product_id'           => '7',
-                'size_id'           => '2',
-                'price'           => '70',
-                'stock'           => '50',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-            [
-                'product_id'           => '7',
-                'size_id'           => '3',
-                'price'           => '50',
-                'stock'           => '90',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-
-            [
-                'product_id'           => '8',
-                'size_id'           => '1',
-                'price'           => '50',
-                'stock'           => '50',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-            [
-                'product_id'           => '8',
-                'size_id'           => '2',
-                'price'           => '70',
-                'stock'           => '50',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-            [
-                'product_id'           => '8',
-                'size_id'           => '3',
-                'price'           => '50',
-                'stock'           => '90',
-               
-                'created_at' => date("Y-m-d H:i:s"),
-                'updated_at' => date("Y-m-d H:i:s"),
-            ],
-
-          
-        ];
-
+     
         
         Product::insert($products);
-        ProductSizePrice::insert($productssizesprices);
     }
 }

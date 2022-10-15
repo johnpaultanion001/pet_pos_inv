@@ -6,7 +6,10 @@ use App\Http\Controllers\Controller;
 use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Order;
+use App\Models\OrderProduct;
 use App\Models\User;
+use Carbon\Carbon;
+
 
 
 class HomeController extends Controller
@@ -40,7 +43,13 @@ class HomeController extends Controller
             $orders = Order::latest()->get();
             $orders_today = Order::whereDay('created_at', '=', date('d'))->get();
 
-            return view('admin.home', compact('products','products_today','customers','customers_today', 'orders','orders_today'));
+            $sales = OrderProduct::where('isCheckout', '1')->where('status','APPROVED')->sum('amount');
+            $sales_today = OrderProduct::where('isCheckout', '1')->where('status','APPROVED')->whereDay('created_at', '=', date('d'))->sum('amount');
+            
+            $product_exp = Product::where("expiration","<", Carbon::now()->addMonths(3))->get();
+            $exp_label  = 'From: ' . date('F d, Y') . ' To: ' . Carbon::now()->addMonths(3)->format('F d, Y');
+
+            return view('admin.home', compact('products','products_today','customers','customers_today', 'orders','orders_today','sales','sales_today','product_exp','exp_label'));
         }
         return abort('403');
     }
