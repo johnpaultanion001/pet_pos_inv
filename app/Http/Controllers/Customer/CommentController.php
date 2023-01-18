@@ -37,4 +37,9 @@ class CommentController extends Controller
             'comment_counts'  => $comments->count(),
         ]);
     }
+
+    public function destroy(Comment $comment){
+        $comment->delete();
+        return response()->json(['success' =>  'Removed Successfully.']);
+    }
 }

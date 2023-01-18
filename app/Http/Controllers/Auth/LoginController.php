@@ -41,25 +41,33 @@ class LoginController extends Controller
         $this->middleware('guest')->except('logout');
     }
 
-    protected function sendLoginResponse(Request $request)
-    {
-        $request->session()->regenerate();
 
-         $this->clearLoginAttempts($request);
+     public function googleLogin(Request $request){
+    	$checkUser = User::where('social_id',$request->uid)->first();
+    	if($checkUser){
+    		Auth::loginUsingId($checkUser->id, true);
+    		return response()->json([
+    			"status" => "success"
+    		]);
+    	}else{
+    		$user = new User;
+    		$user->social_id = $request->uid;
+    		$user->email = $request->email;
+    		$user->provider = "google";
+    		$user->save();
+			
+    		Auth::loginUsingId($user->id, true);
+    		return response()->json([
+    			"status" => "success"
+    		]);
+    	}
+    }
 
-         if ($response = $this->authenticated($request, $this->guard()->user())) {
-             return $response;
-      }
-
-        
-         if(Auth::user()->role == 'customer'){
-             $redirectTo = '/';
-         }else if(Auth::user()->role == 'admin'){
-             $redirectTo = '/admin/dashboard';
-         }
-
-         return $request->wantsJson()
-                     ? new JsonResponse([], 204)
-                     : redirect($redirectTo);
-     }
+    public function redirectPath(){
+        if(Auth::user()->role == 'customer'){
+            return route('home');
+        }else if(Auth::user()->role == 'admin'){
+            return route('admin.dashboard');
+        }
+    }
 }

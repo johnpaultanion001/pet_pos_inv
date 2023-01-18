@@ -97,26 +97,8 @@ class ProductController extends Controller
             $product->image = $file_name_to_save;
         }
        
-        ProductSizePrice::where('product_id', $product->id)
-                            ->whereNotIn('size_id', $request->input('size'))
-                            ->delete();
-                            
-        foreach($request->input('size') as $key => $size )
-        {
-            ProductSizePrice::updateOrCreate(
-                [
-                    'product_id'                => $product->id,
-                    'size_id'                   => $size,
-                ],
-                [
-                    'product_id'                => $product->id,
-                    'size_id'                   => $size,
-                    'price'                     => $request->price[$key],
-                    'stock'                     => $request->stock[$key],
-                ]
-            );
-        }
         
+    
 
         $product->name = $request->name;
         $product->category_id = $request->category;

@@ -46,7 +46,9 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                         @enderror
                       <div class="text-center">
                         <button type="submit" class="btn bg-primary w-100 my-4 mb-2">LOGIN</button>
-                        <button type="button" class="btn bg-success text-white w-100 my-1 mb-2">LOGIN WITH GMAIL</button>
+                        <a href="javascript:;" id="googleLogin" class="btn bg-success text-white w-100 my-1 mb-2">
+                          LOGIN WITH GMAIL
+                        </a>
                       </div>
                       <p class="mt-4 text-sm text-center">
                         Not register?
@@ -62,6 +64,24 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
 @endsection
 
 @section('script')
+<!-- Firebase files -->
+<!-- Insert these scripts at the bottom of the HTML, but before you use any Firebase services -->
+
+<!-- Firebase App (the core Firebase SDK) is always required and must be listed first -->
+<script src="https://www.gstatic.com/firebasejs/8.2.5/firebase-app.js"></script>
+
+<!-- If you enabled Analytics in your project, add the Firebase SDK for Analytics -->
+<script src="https://www.gstatic.com/firebasejs/8.2.5/firebase-analytics.js"></script>
+
+<!-- Add Firebase products that you want to use -->
+<script src="https://www.gstatic.com/firebasejs/8.2.5/firebase-auth.js"></script>
+<script src="https://www.gstatic.com/firebasejs/8.2.5/firebase-firestore.js"></script>
+<!-- firebase Conf -->
+<script type="text/javascript" src="{{ url('/assets/js/firebase/firebase-conf.js') }}"></script>
+<!-- facebook provider -->
+<script type="text/javascript" src="{{ url('/assets/js/firebase/facebook.js') }}"></script>
+<script type="text/javascript" src="{{ url('/assets/js/firebase/google.js') }}"></script>
+
 <script>
 
 </script>

@@ -1,6 +1,7 @@
 <?php
 
 use Illuminate\Support\Facades\Route;
+use App\Http\Controllers\Auth as Login;
 
 Route::get('/', 'HomeController@index')->name('home');
 Route::get('/about', 'HomeController@about')->name('about');
@@ -8,6 +9,7 @@ Route::get('/product/filter', 'HomeController@filter')->name('filter');
 
 
 Auth::routes();
+Route::get('/google/login', [Login\LoginController::class, 'googleLogin'])->name('googleLogin');
 
 Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'middleware' => ['auth']], function () {
     // Dashboard
@@ -76,7 +78,9 @@ Route::group(['prefix' => 'customer', 'as' => 'customer.', 'namespace' => 'Custo
 
     // POST
     Route::get('posts', 'PostController@index')->name('post.index');
+    Route::delete('posts/{post}', 'PostController@destroy')->name('post.destroy');
     Route::post('posts_store', 'PostController@store')->name('post.store');
     Route::get('comments', 'CommentController@store')->name('comment.store');
+    Route::delete('comments/{comment}', 'CommentController@destroy')->name('comment.destroy');
    
 });

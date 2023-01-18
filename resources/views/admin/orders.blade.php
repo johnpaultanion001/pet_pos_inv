@@ -12,11 +12,16 @@
         <div class="row">
             <div class="col-md-12">
                 <div class="card p-2">
+                    
                     <div class="card-header border-0">
                         <div class="row ">
-                            <div class="col-md-11">
+                            <div class="col-md-10">
                                 <h4 class="mb-0 text-uppercase" id="titletable">Manage Orders</h4>
                             </div>
+                            <div class="col-md-2">
+                                <a href="/" class="text-uppercase create_record btn btn-sm btn-primary">New Order</a>
+                               
+                            </div> 
                         </div>
                     </div>
                     <div class="table-responsive">

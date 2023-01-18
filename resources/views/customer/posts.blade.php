@@ -55,58 +55,75 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                             </li>
                             @forelse($posts as $post)
                                 <li class="list-group-item" style="width: 100%;">
-                                    <div class="d-flex align-items-center">
-                                        <button class="btn btn-icon-only btn-rounded btn-outline-dark mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="bi bi-chat-fill me-1"></i></button>
-                                        <div class="d-flex flex-column">
-                                            <h6 class="text-xs text-uppercase">{{$post->user->name ?? ''}}</h6>
-                                            <h6 class="text-s mt-2">{{$post->post ?? ''}}</h6>
+                                        <div class="d-flex align-items-center">
+                                            <button class="btn btn-icon-only btn-rounded btn-outline-dark mb-0 me-3 p-3 btn-sm d-flex align-items-center justify-content-center"><i class="bi bi-chat-fill me-1"></i></button>
+                                            <div class="d-flex flex-column">
+                                                <h6 class="text-xs text-uppercase">{{$post->user->name ?? ''}}</h6>
+                                            
+                                                <h6 class="text-s mt-2">{{$post->post ?? ''}}</h6>
 
-                                            <small class="mb-0">{{$post->created_at->diffForHumans()}}</small>
-                                            <div class="picture">
-                                                <img src="/customer/post/{{$post->image ?? ''}}" class="picture-src"/>
-                                            </div>
-                                            <hr>
-                                            <a id="comment_count{{$post->id}}" class="link-primary" data-toggle="collapse" href="#collapseExample{{$post->id}}" role="button" aria-expanded="false" aria-controls="collapseExample"><i class="bi bi-chat-fill me-1"></i> {{$post->comments()->count()}}</a>
-                                        </div>
-                                    </div>
-                                    <div class="collapse mt-3" id="collapseExample{{$post->id}}" style="width: 100%;">
-                                                <div class="card card-body text-left">
-                                                    <form method="post" class="myCommentForm" >
-                                                        @csrf
-                                                        <div class="input-group">
-
-                                                        
-                                                             <input type="text" class="form-control comments" name="comment" placeholder="Enter your comment" required>
-                                                             <input type="hidden" class="form-control" readonly name="post_id" value="{{$post->id ?? ''}}">
-                                                             
-                                                            <div class="input-group-append">
-                                                                <span class="input-group-text"><button  type="submit" class="btn text-primary" style="background-color:transparent;" >SUBMIT</button></span>
-                                                            </div>
-                                                        </div>
-                                                        
-                                                    </form>
-                                                   
-                                                    <div id="comments_section{{$post->id}}">
-                                                            @if($post->comments()->count() < 1)
-                                                            <hr>
-                                                                <b> NO COMMENT FOUND</b>  <br>
-                                                            @else
-                                                            @foreach($post->comments()->get() as $comment)
-                                                            <hr>
-                                                                <div class="row">
-                                                                    <div class="col-12">
-                                                                        <b> {{$comment->user->name ?? ''}}</b>  <br>
-                                                                        <h6>{{$comment->comment ?? ''}}</h6> <br>
-                                                                        <small class="mb-0">{{$comment->created_at->diffForHumans()}}</small>
-                                                                    </div>
-                                                                </div>
-                                                                
-                                                            @endforeach
-                                                        @endif
-                                                    </div>
+                                                <small class="mb-0">{{$post->created_at->diffForHumans()}}</small>
+                                                <div class="picture">
+                                                    <img src="/customer/post/{{$post->image ?? ''}}" class="picture-src"/>
                                                 </div>
+                                                <hr>
+                                                @if($post->user_id == auth()->user()->id)
+                                                    <button class="btn btn-danger mb-0 btn-sm delete_post" post_id="{{$post->id}}">
+                                                        <i class="bi bi-trash"></i>
+                                                    </button>
+                                                @endif
+                                                <br>
+                                                <a id="comment_count{{$post->id}}" class="link-primary" data-toggle="collapse" href="#collapseExample{{$post->id}}" role="button" aria-expanded="false" aria-controls="collapseExample"><i class="bi bi-chat-fill me-1"></i> {{$post->comments()->count()}}</a>
+                                                
                                             </div>
+                                            
+                                        </div>
+                                        <div class="collapse mt-3" id="collapseExample{{$post->id}}" style="width: 100%;">
+                                                    <div class="card card-body text-left">
+                                                        <form method="post" class="myCommentForm" >
+                                                            @csrf
+                                                            <div class="input-group">
+
+                                                            
+                                                                <input type="text" class="form-control comments" name="comment" placeholder="Enter your comment" required>
+                                                                <input type="hidden" class="form-control" readonly name="post_id" value="{{$post->id ?? ''}}">
+                                                                
+                                                                <div class="input-group-append">
+                                                                    <span class="input-group-text"><button  type="submit" class="btn text-primary" style="background-color:transparent;" >SUBMIT</button></span>
+                                                                </div>
+                                                            </div>
+                                                            
+                                                        </form>
+                                                    
+                                                        <div id="comments_section{{$post->id}}">
+                                                                @if($post->comments()->count() < 1)
+                                                                <hr>
+                                                                    <b> NO COMMENT FOUND</b>  <br>
+                                                                @else
+                                                                @foreach($post->comments()->get() as $comment)
+                                                                <hr>
+                                                                    <div class="row">
+                                                                        <div class="col-12">
+                                                                            <b> {{$comment->user->name ?? ''}}</b> 
+                                                                                @if($comment->user_id == auth()->user()->id)
+                                                                                    <button class="btn btn-link mb-0 btn-sm text-danger delete_comment" comment_id="{{$comment->id}}">
+                                                                                        <i class="bi bi-trash"></i>
+                                                                                    </button> 
+                                                                                @endif
+                                                                            <br>
+                                                                            <h6>{{$comment->comment ?? ''}}</h6> <br>
+                                                                            <small class="mb-0">{{$comment->created_at->diffForHumans()}}</small>
+                                                                        </div>
+                                                                    </div>
+                                                                    
+                                                                @endforeach
+                                                            @endif
+                                                        </div>
+                                                    </div>
+                                        </div>
+                                
                                 </li>
+
                                 <hr>
                             @empty
                             <div class="text-center">
@@ -216,6 +233,114 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                 }
             });
         });
+
+        $(document).on('click', '.delete_post', function(){
+            var id = $(this).attr('post_id');
+            $.confirm({
+                title: 'Confirmation',
+                content: 'You really want to delete this post?',
+                type: 'red',
+                buttons: {
+                    confirm: {
+                        text: 'confirm',
+                        btnClass: 'btn-blue',
+                        action: function(){
+                            return $.ajax({
+                                url:"/customer/posts/"+id,
+                                method:'DELETE',
+                                data: {
+                                    _token: '{!! csrf_token() !!}',
+                                },
+                                dataType:"json",
+                                beforeSend:function(){
+                                    
+                                },
+                                success:function(data){
+                                    if(data.success){
+                                        $.confirm({
+                                            title: 'Confirmation',
+                                            content: data.success,
+                                            type: 'green',
+                                            buttons: {
+                                                    confirm: {
+                                                        text: 'Confirm',
+                                                        btnClass: 'btn-blue',
+                                                        keys: ['enter', 'shift'],
+                                                        action: function(){
+                                                            location.reload();
+                                                        }
+                                                    },
+                                                    
+                                            }
+                                        });
+                                    }
+                                }
+                            })
+                        }
+                    },
+                    cancel:  {
+                        text: 'cancel',
+                        btnClass: 'btn-red',
+                    }
+                }
+            });
+
+        });
+        
+
+        $(document).on('click', '.delete_comment', function(){
+            var id = $(this).attr('comment_id');
+            $.confirm({
+                title: 'Confirmation',
+                content: 'You really want to delete this comment?',
+                type: 'red',
+                buttons: {
+                    confirm: {
+                        text: 'confirm',
+                        btnClass: 'btn-blue',
+                        action: function(){
+                            return $.ajax({
+                                url:"/customer/comments/"+id,
+                                method:'DELETE',
+                                data: {
+                                    _token: '{!! csrf_token() !!}',
+                                },
+                                dataType:"json",
+                                beforeSend:function(){
+                                    
+                                },
+                                success:function(data){
+                                    if(data.success){
+                                        $.confirm({
+                                            title: 'Confirmation',
+                                            content: data.success,
+                                            type: 'green',
+                                            buttons: {
+                                                    confirm: {
+                                                        text: 'Confirm',
+                                                        btnClass: 'btn-blue',
+                                                        keys: ['enter', 'shift'],
+                                                        action: function(){
+                                                            location.reload();
+                                                        }
+                                                    },
+                                                    
+                                            }
+                                        });
+                                    }
+                                }
+                            })
+                        }
+                    },
+                    cancel:  {
+                        text: 'cancel',
+                        btnClass: 'btn-red',
+                    }
+                }
+            });
+
+        });
+        
 
 </script>
 @endsection

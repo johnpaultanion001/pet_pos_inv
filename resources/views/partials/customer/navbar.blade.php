@@ -52,6 +52,14 @@
                 ORDERS
                 <span class="badge btn-primary text-white ms-1 rounded-pill">{{$orders ?? '0'}}</span>
             </a>
+            @if(Auth::user())
+                @if(Auth::user()->role == 'admin')
+                <a class="btn btn-outline-success m-2" href="/admin/dashboard">
+                        <i class="bi bi-person-square me-1"></i>
+                        ADMIN PAGE
+                </a>
+                @endif
+            @endif
         </div>
     </div>
 </nav>
