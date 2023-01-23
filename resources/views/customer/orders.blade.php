@@ -353,6 +353,23 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                                         }
                                     });
                                 }  
+                                if(data.no_address){
+                                    $.confirm({
+                                        title: 'Confirmation',
+                                        content: data.no_address,
+                                        type: 'red',
+                                        buttons: {
+                                                confirm: {
+                                                    text: 'Confirm',
+                                                    btnClass: 'btn-blue',
+                                                    keys: ['enter', 'shift'],
+                                                    action: function(){
+                                                        window.location.href = "/customer/account";
+                                                    }
+                                                },
+                                        }
+                                    });
+                                }
                                 if(data.nodata){
                                     $.confirm({
                                         title: 'Confirmation',

@@ -32,6 +32,7 @@
                                     <th scope="col">ORDER ID</th>
                                     <th scope="col">SHIPPING OPTION</th>
                                     <th scope="col">CUSTOMER NAME</th>
+                                    <th scope="col">CUSTOMER ADDRESS</th>
                                     <th scope="col">PRODUCT BUY</th>
                                     <th scope="col">AMOUNT</th>
                                     <th scope="col">ORDER AT</th>
@@ -62,6 +63,9 @@
                                         </td>
                                         <td>
                                             {{  $order->user->name ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{  $order->user->address ?? '' }}
                                         </td>
                                         <td>
                                          

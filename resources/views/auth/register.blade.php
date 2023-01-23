@@ -68,7 +68,7 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                           </div>
                           <div class="col-lg-6">
                             <div class="form-group">
-                              <label class="form-label">Address <span class="text-danger">*</span></label>
+                              <label class="form-label">Address (No./Street/City/Province) <span class="text-danger">*</span></label>
                               <input type="text" id="address" name="address" class="form-control @error('address') is-invalid @enderror" value="{{ old('address') }}"   required autocomplete="address">
                               @error('address')
                                 <span class="invalid-feedback" role="alert">

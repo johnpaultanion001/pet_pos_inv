@@ -173,7 +173,12 @@ class OrderController extends Controller
 
         if($ordercount < 1){
             return response()->json(['nodata' => 'No data available']);
-        }       
+        } 
+        if(auth()->user()->address == null){
+            return response()->json(['no_address' => 'No address indicated in this account .']);
+        }
+        
+        
 
         $orders = Order::create([
             'user_id'   => auth()->user()->id,
