@@ -5,9 +5,9 @@
 
 @section('content')
 <header class="py-2" style="
-background: #FBD3E9;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #BB377D, #FBD3E9);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+background: #FFD29A;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #BB377D, #FFD29A);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #FFD29A, #FFD29A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 ">
     <div class="container px-4 px-lg-5 my-5">
@@ -39,10 +39,12 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                                             <div class="d-flex flex-column">
                                                 <h6 class="mb-1 text-dark text-sm">
                                                     @foreach($order->orderproducts as $product_order)
-                                                        <span class="badge bg-warning">{{$product_order->qty ?? ''}} {{$product_order->product->name ?? ''}} * {{$product_order->price ?? ''}} = {{$product_order->amount ?? ''}}</span>
-                                                        @if($product_order->isPromo == '1')
-                                                            <span class="badge bg-warning">BUY 1 TAKE 1</span>
+                                                        <span class="badge bg-success">{{$product_order->qty ?? ''}} {{$product_order->product->name ?? ''}} * {{$product_order->price ?? ''}} = {{$product_order->amount ?? ''}}</span>
+                                                        
+                                                        @if($product_order->expiration < Carbon\Carbon::now()->addMonths(3))
+                                                            <div class="badge bg-warning ">{{$product_order->promo ?? ''}}</div>
                                                         @endif
+                                                        
                                                         <br>
                                                     @endforeach
                                                 </h6>
@@ -90,36 +92,36 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                                                 <h6 class="mb-1 text-dark text-sm">
                                                     @foreach($order->orderproducts as $product_order)
                                                         <span class="badge bg-success">{{$product_order->qty ?? ''}} {{$product_order->product->name ?? ''}} * {{$product_order->price ?? ''}} = {{$product_order->amount ?? ''}}</span> 
-                                                        @if($product_order->isPromo == '1')
-                                                            <span class="badge bg-warning">BUY 1 TAKE 1</span>
-                                                            
-                                                        @endif                
+                                                        @if($product_order->expiration < Carbon\Carbon::now()->addMonths(3))
+                                                            <div class="badge bg-warning ">{{$product_order->promo ?? ''}}</div>
+                                                        @endif              
                                                         <br> 
                                                         @php
-                                                            $isStar = App\Models\Review::where('order_id', $product_order->order_id)->where('product_id', $product_order->product->id)
+                                                            $isStar = App\Models\Review::where('order_id', $product_order->order_id)->where('product_id', $product_order->product->id ?? '')
                                                                                             ->where('user_id', auth()->user()->id)->first();
                                                         @endphp
-                                                        <a id="reviews_count{{$product_order->product->id}}" class="link-primary" data-toggle="collapse" href="#collapseExample{{$product_order->product->id}}" role="button" aria-expanded="false" aria-controls="collapseExample">
+                                                        <a id="reviews_count{{$product_order->product->id ?? ''}}" class="link-primary" data-toggle="collapse" href="#collapseExample{{$product_order->product->id ?? 
+                                                        ''}}" role="button" aria-expanded="false" aria-controls="collapseExample">
                                                             {{$isStar == null ? 'Add your review':'Edit your review'}}   
                                                         </a>      
                                                          <br>
-                                                        <div class="collapse mt-3" id="collapseExample{{$product_order->product->id}}">
+                                                        <div class="collapse mt-3" id="collapseExample{{$product_order->product->id ?? ''}}">
                                                             <div class="card card-body text-left">
                                                                 <form method="post" class="myReviewForm">
                                                                     @csrf
                                                                     <div class="input-group">
                                                                         
-                                                                        <i class="bi bi-star-fill m-3 isStar {{$isStar->isStar ?? '' == true ? 'text-warning':''}}" product_id="{{$product_order->product->id}}" id="isStarIcon{{$product_order->product->id}}" style="cursor: pointer;"></i>
-                                                                        <input type="hidden" class="form-control" id="isStar{{$product_order->product->id}}" name="isStar"  value="{{$isStar->isStar ?? '0'}}" readonly>
+                                                                        <i class="bi bi-star-fill m-3 isStar {{$isStar->isStar ?? '' == true ? 'text-warning':''}}" product_id="{{$product_order->product->id ?? ''}}" id="isStarIcon{{$product_order->product->id ?? ''}}" style="cursor: pointer;"></i>
+                                                                        <input type="hidden" class="form-control" id="isStar{{$product_order->product->id ?? ''}}" name="isStar"  value="{{$isStar->isStar ?? '0'}}" readonly>
                                                                         <input type="text" class="form-control review" name="review" placeholder="Enter a message" required>
-                                                                        <input type="hidden" class="form-control" name="product_id" value="{{$product_order->product->id}}" readonly>
+                                                                        <input type="hidden" class="form-control" name="product_id" value="{{$product_order->product->id ?? ''}}" readonly>
                                                                         <input type="hidden" class="form-control" name="order_id" value="{{$product_order->order_id}}" readonly>
                                                                         <div class="input-group-append">
                                                                             <span class="input-group-text"><button  type="submit" class="btn text-primary" style="background-color:transparent;" >SUBMIT</button></span>
                                                                         </div>
                                                                     </div>
                                                                 </form>
-                                                                <div id="review_section{{$product_order->product->id}}" style="max-height: 300px; overflow-y : auto;">
+                                                                <div id="review_section{{$product_order->product->id ?? ''}}" style="max-height: 300px; overflow-y : auto;">
                                                                         @if($product_order->product->reviews()->count() < 1)
                                                                         <hr>
                                                                             <b> NO REVIEW FOUND</b>  <br>

@@ -30,7 +30,7 @@ Route::group(['prefix' => 'admin', 'as' => 'admin.', 'namespace' => 'Admin', 'mi
     Route::get('orders/receipt/{order}', 'OrderController@receipt')->name('orders.receipt');
 
     // Sales Reports
-    Route::get('sales_reports/{filter}', 'OrderController@sales_reports')->name('sales_reports');
+    Route::get('sales_reports/{filter}/{from}/{to}', 'OrderController@sales_reports')->name('sales_reports');
     
 
      // CustomerList

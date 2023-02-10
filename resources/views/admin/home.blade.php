@@ -7,6 +7,10 @@
     @include('../partials.admin.sidebar')
 @endsection
 
+<script
+src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+</script>
+
 @section('content')
 <div class="container-fluid py-4">
       <div class="row">
@@ -79,6 +83,63 @@
             </div>
           </div>
         </div>
+          <div class = "row">
+                  <div class="col-md-6 p-3 pt-3" >
+                    <div class = "card p-3">
+                      <canvas id="salesChart"></canvas>
+                    </div>
+                  </div>
+                  <div class="col-md-6 p-3 pt-3">
+                        <div class="card p-3">
+                            <canvas id="myChart1" style="width:100%;max-width:600px"></canvas>
+                        </div>
+                  </div>
+            </div>
+            <div class = "row">
+                  <div class="col-md-6 p-3 pt-3" >
+                    <div class = "card p-3">
+                      <canvas id="soldChart"></canvas>
+                    </div>
+                  </div>
+                  <div class="col-md-6  p-3 pt-3">
+                  <div class="card" style="height: 300px;">
+                    <div class="card-body">
+                    <h4 class="text-sm mb-0 text-capitalize text-primary">Lower stock less than 5 (Updated as of {{date('M j , Y h:i A')}}) </h4>
+                        <div class="table-responsive">
+                            <table class="table datatable-table display text-center" width="100%">
+                                <thead class="thead-light">
+                                    <tr>
+                                        <th>ID</th>
+                                        <th>Name</th>
+                                        <th>Retailed Price</th>
+                                        <th>Stock</th>
+                                    </tr>
+                                </thead>
+                                <tbody class="text-uppercase font-weight-bold">
+                                    @foreach($lower_stock as $exp)
+                                            <tr>
+                                                <td>
+                                                    {{$exp->id ?? ''}}
+                                                </td>
+                                                <td>
+                                                    {{$exp->name ?? ''}}
+                                                </td>
+                                                <td>
+                                                    {{ number_format($exp->retailed_price ?? '' , 2, '.', ',') }}
+                                                </td>
+                                                <td>
+                                                    {{$exp->stock ?? ''}}
+                                                </td>
+                                            </tr>       
+                                    @endforeach
+                                </tbody>
+                            </table>
+                        </div>
+                    </div>
+                  </div>
+                  </div>
+                  
+            </div>
         <div class="col-xl-12 mt-3">
           <div class="card">
             <div class="card-body">
@@ -89,8 +150,9 @@
                             <tr>
                                 <th>ID</th>
                                 <th>Name</th>
-                                <th>Price</th>
+                                <th>Retailed Price</th>
                                 <th>Stock</th>
+                                <th>Promo</th>
                                 <th>Expiration</th>
                                 <th>Created At</th>
                             </tr>
@@ -105,10 +167,23 @@
                                             {{$exp->name ?? ''}}
                                         </td>
                                         <td>
-                                            {{ number_format($exp->price ?? '' , 2, '.', ',') }}
+                                            {{ number_format($exp->retailed_price ?? '' , 2, '.', ',') }}
                                         </td>
                                         <td>
                                             {{$exp->stock ?? ''}}
+                                        </td>
+                                        <td>
+                                          @if($exp->expiration < Carbon\Carbon::now()->addMonths(3))
+                                              <div class="badge bg-warning text-white position-absolute text-uppercase">25 % OFF</div>
+                                          @endif
+
+                                          @if($exp->expiration < Carbon\Carbon::now()->addMonths(2))
+                                              <div class="badge bg-warning text-white position-absolute text-uppercase">35 % OFF</div>
+                                          @endif
+
+                                          @if($exp->expiration < Carbon\Carbon::now()->addMonths(1))
+                                              <div class="badge bg-warning text-white position-absolute text-uppercase">45 % OFF</div>
+                                          @endif
                                         </td>
                                         <td>
                                           {{ $exp->expiration->format('M j , Y') }}
@@ -136,7 +211,78 @@
 
 
 @section('script')
+<script src="{{ asset('js/chart.js') }}"></script>
 <script> 
+  var xValues = ["APPROVED", "PENDING"];
+  var yValues = [{{$status_approved}},{{$status_pending}}];
+  var barColors = [
+    "#b91d47",
+    "#00aba9"
+  ];
+
+new Chart("myChart1", {
+  type: "doughnut",
+  data: {
+    labels: xValues,
+    datasets: [{
+      backgroundColor: barColors,
+      data: yValues
+    }]
+  },
+  options: {
+    title: {
+      display: true,
+      text: "Status of Delivery"
+    }
+  }
+});
+
+var ctx = document.getElementById('salesChart').getContext('2d');
+var salesChart = new Chart(ctx, {
+    type: 'line',
+    data: {
+        labels: @json($labels),
+        datasets: [{
+            label: 'Monthly Sales',
+            data: @json($data),
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+var ctx = document.getElementById('soldChart').getContext('2d');
+var salesChart = new Chart(ctx, {
+    type: 'bar',
+    data: {
+        labels: @json($labels_sold),
+        datasets: [{
+            label: 'Sold',
+            data: @json($data_sold),
+            backgroundColor: 'rgba(255, 99, 132, 0.2)',
+            borderColor: 'rgba(255, 99, 132, 1)',
+            borderWidth: 1
+        }]
+    },
+    options: {
+        scales: {
+            y: {
+                beginAtZero: true
+            }
+        }
+    }
+});
+
+console.log($recordSolds);
+  
 </script>
 @endsection
 

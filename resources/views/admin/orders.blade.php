@@ -32,6 +32,7 @@
                                     <th scope="col">ORDER ID</th>
                                     <th scope="col">SHIPPING OPTION</th>
                                     <th scope="col">CUSTOMER NAME</th>
+                                    <th scope="col">CUSTOMER ADDRESS</th>
                                     <th scope="col">PRODUCT BUY</th>
                                     <th scope="col">AMOUNT</th>
                                     <th scope="col">ORDER AT</th>
@@ -64,11 +65,14 @@
                                             {{  $order->user->name ?? '' }}
                                         </td>
                                         <td>
+                                            {{  $order->user->address ?? '' }}
+                                        </td>
+                                        <td>
                                          
                                             @foreach($order->orderproducts as $product_order)
-                                                <span class="badge bg-success">{{$product_order->qty}} {{$product_order->product->name}} * {{$product_order->price}} = {{ number_format($product_order->amount ?? '' , 2, '.', ',') }} </span>
-                                                @if($product_order->isPromo == '1')
-                                                    <span class="badge bg-warning">BUY 1 TAKE 1</span>
+                                                <span class="badge bg-success">{{$product_order->qty ?? '0'}} {{$product_order->product->name ?? ''}} * {{$product_order->price ?? '0'}} = {{ number_format($product_order->amount ?? '' , 2, '.', ',') }} </span>
+                                                @if($product_order->expiration < Carbon\Carbon::now()->addMonths(3))
+                                                    <div class="badge bg-warning ">{{$product_order->promo ?? ''}}</div>
                                                 @endif    
                                                 <br>
                                             @endforeach

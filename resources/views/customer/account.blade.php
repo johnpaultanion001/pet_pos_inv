@@ -5,9 +5,9 @@
 
 @section('content')
 <header class="py-2" style="
-background: #FBD3E9;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #BB377D, #FBD3E9);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+background: #FFD29A;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #BB377D, #FFD29A);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #FFD29A, #FFD29A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 ">
     <div class="container px-4 px-lg-5 my-5">
@@ -54,7 +54,7 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                             </div>
                             <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="form-label">Address <span class="text-danger">*</span></label>
+                                <label class="form-label">Address (No./Street/City/Province) <span class="text-danger">*</span></label>
                                     <input type="text" name="address" id="address" class="form-control" value="{{Auth()->user()->address ?? ''}}">
                                     <span class="invalid-feedback" role="alert">
                                         <strong id="error-address"></strong>

@@ -15,6 +15,9 @@
         <link href="{{ asset('/customer/css/styles.css') }}" rel="stylesheet" />
         <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/jquery-confirm/3.3.2/jquery-confirm.min.css">
         <style>
+            body{
+                background-color: #FCE3C3;
+            }
             .modal-footer{
                 display: flex; 
                 justify-content: space-between;

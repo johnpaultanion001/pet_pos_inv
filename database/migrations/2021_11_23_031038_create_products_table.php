@@ -20,8 +20,10 @@ class CreateProductsTable extends Migration
             $table->string('category_id');
             $table->longText('description')->nullable();
             $table->date('expiration');
-            $table->string('price')->nullable();
+            $table->string('unit_price')->nullable();
+            $table->string('retailed_price')->nullable();
             $table->string('stock')->nullable();
+            $table->boolean('isRemove')->default(false);
             $table->timestamps();
         });
     }

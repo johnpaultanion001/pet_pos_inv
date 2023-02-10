@@ -11,7 +11,7 @@ class HomeController extends Controller
     public function index()
     {
         $categories = Category::latest()->get();
-        $products = Product::orderBy('expiration', 'asc')->get();
+        $products = Product::orderBy('expiration', 'asc')->where("stock",">", 0)->where('isRemove', false)->get();
         return view('customer.home' , compact('products','categories'));
     }
 
@@ -25,14 +25,14 @@ class HomeController extends Controller
         $value  = $request->get('value');
 
         if($filter == 'search'){
-            $data = Product::where('name', 'LIKE', "%$value%")->latest()->get();
+            $data = Product::where('name', 'LIKE', "%$value%")->orderBy('expiration', 'asc')->where("stock",">", 0)->where('isRemove', false)->get();
         }
 
         if($filter == 'category'){
             if($value == ''){
-                $data = Product::orderBy('expiration', 'asc')->get();
+                $data = Product::orderBy('expiration', 'asc')->where("stock",">", 0)->where('isRemove', false)->get();
             }else{
-                $data = Product::where('category_id', $value)->orderBy('expiration', 'asc')->get();
+                $data = Product::where('category_id', $value)->orderBy('expiration', 'asc')->where("stock",">", 0)->where('isRemove', false)->get();
             }
         }
         
@@ -42,6 +42,7 @@ class HomeController extends Controller
                 'name'         => $item->name,
                 'category'     => $item->category->name,
                 'image'        => $item->image,
+                'price'        => $item->retailed_price,
             );
         }
         return response()->json([

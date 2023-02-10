@@ -5,9 +5,9 @@
 
 @section('content')
 <header class="py-2" style="
-background: #FBD3E9;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #BB377D, #FBD3E9);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+background: #FFD29A;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #BB377D, #FFD29A);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #FFD29A, #FFD29A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 ">
     <div class="container px-4 px-lg-5 my-5">
@@ -63,9 +63,11 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                                                 <h6 class="text-s mt-2">{{$post->post ?? ''}}</h6>
 
                                                 <small class="mb-0">{{$post->created_at->diffForHumans()}}</small>
+                                                @if($post->image != null)
                                                 <div class="picture">
                                                     <img src="/customer/post/{{$post->image ?? ''}}" class="picture-src"/>
                                                 </div>
+                                                @endif
                                                 <hr>
                                                 @if($post->user_id == auth()->user()->id)
                                                     <button class="btn btn-danger mb-0 btn-sm delete_post" post_id="{{$post->id}}">

@@ -20,8 +20,10 @@ class Product extends Model
         'category_id',
         'description',
         'expiration',
-        'price',
+        'unit_price',
+        'retailed_price',
         'stock',
+        'isRemove',
     ];
 
     public function category()

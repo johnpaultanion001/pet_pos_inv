@@ -198,6 +198,7 @@
             extend: 'excel',
             className: 'btn-primary btn-sm m-2',
             text: excelButtonTrans,
+            footer: true,
             exportOptions: {
                 columns: ':visible'
             }
@@ -206,6 +207,7 @@
             extend: 'pdf',
             className: 'btn-primary btn-sm m-2',
             text: pdfButtonTrans,
+            footer: true,
             exportOptions: {
                 columns: ':visible'
             }
@@ -214,6 +216,7 @@
             extend: 'print',
             className: 'btn-primary btn-sm m-2',
             text: printButtonTrans,
+            footer: true,
             exportOptions: {
                 columns: ':visible'
             }

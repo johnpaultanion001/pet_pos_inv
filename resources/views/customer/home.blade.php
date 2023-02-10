@@ -2,22 +2,73 @@
 @section('navbar')
     @include('../partials.customer.navbar')
 @endsection
-
 @section('content')
+
+<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.css">
+
+	<link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick-theme.min.css">
+<style>
+    img.slick-slide{
+            height: 350px;
+			width: 100%;
+
+		}
+		.slider-full-caption{
+			position: absolute;
+			top: 150px;
+			left: 50px;
+			color: #fff;
+			font-size: 68px;
+		}
+
+footer{
+    background-color: #F18500;
+    padding-bottom: 20px;
+}
+
+</style>
 <header class="py-5" style="
-background: #FBD3E9;  /* fallback for old browsers */
-background: -webkit-linear-gradient(to right, #BB377D, #FBD3E9);  /* Chrome 10-25, Safari 5.1-6 */
-background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
+background: #FFD29A;  /* fallback for old browsers */
+background: -webkit-linear-gradient(to right, #BB377D, #FFD29A);  /* Chrome 10-25, Safari 5.1-6 */
+background: linear-gradient(to right, #FFD29A, #FFD29A); /* W3C, IE 10+/ Edge, Firefox 16+, Chrome 26+, Opera 12+, Safari 7+ */
 
 ">
     <div class="container px-4 px-lg-5 my-5">
         <div class="text-center text-white">
-            <h1 class="display-4 fw-bolder">{{ trans('panel.site_title') }}</h1>
-            <p class="lead fw-normal text-white-50 mb-0">All Products</p>
+        <div class="slider">
+		
+		<div class="slider-full">
+			<div class="single-item">
+				<div class="item"><img class="slick-slide" src="assets/img/petto1.webp" alt="">
+					<div class="slider-full-caption">
+					</div>
+				</div>
+
+				<div class="item"><img class="slick-slide" src="assets/img/petto3.webp" alt="">
+					<div class="slider-full-caption">
+					</div>
+				</div>
+
+				<div class="item"><img class="slick-slide" src="assets/img/petto2.webp" alt="">
+					<div class="slider-full-caption">
+					</div>
+				</div>
+
+				<div class="item"><img class="slick-slide" src="assets/img/petto4.webp" alt="">
+					<div class="slider-full-caption">
+					</div>
+				</div>
+
+				<div class="item"><img class="slick-slide" src="assets/img/petto5.webp" alt="">
+					<div class="slider-full-caption">
+					</div>
+				</div>
+
+			</div>
+            
         </div>
     </div>
 </header>
-
 <section class="py-5" style="margin-top: -120px; min-height: 60vh;">
     <div class="container">
         <div class="card">
@@ -43,7 +94,15 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                                 <div class="badge bg-dark text-white position-absolute text-uppercase" style="top: 0.5rem; right: 0.5rem">{{$product->category->name ?? ''}}</div>
                               
                                 @if($product->expiration < Carbon\Carbon::now()->addMonths(3))
-                                <div class="badge bg-warning text-white position-absolute text-uppercase" style="top:  0.5rem; left: 0.5rem">buy 1 take 1</div>
+                                    <div class="badge bg-warning text-white position-absolute text-uppercase" style="top:  0.5rem; left: 0.5rem">25 % OFF</div>
+                                @endif
+
+                                @if($product->expiration < Carbon\Carbon::now()->addMonths(2))
+                                    <div class="badge bg-warning text-white position-absolute text-uppercase" style="top:  0.5rem; left: 0.5rem">35 % OFF</div>
+                                @endif
+
+                                @if($product->expiration < Carbon\Carbon::now()->addMonths(1))
+                                    <div class="badge bg-warning text-white position-absolute text-uppercase" style="top:  0.5rem; left: 0.5rem">45 % OFF</div>
                                 @endif
 
                                 <div class="badge text-dark position-absolute text-uppercase" style="bottom: 0.5rem; right: 0.5rem">
@@ -57,8 +116,31 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                                     <div class="text-center">
                                         <!-- Product name-->
                                         <h5 class="fw-bolder">{{$product->name ?? ''}}</h5>
-                                        <small class="fw-bolder">{{$product->description ?? ''}}</small> <br>
-                                        <small class="fw-bolder text-danger">₱ {{$product->price ?? ''}}</small>
+                                        @php
+                                            $regular_price = $product->retailed_price;
+                                            if($product->expiration < Carbon\Carbon::now()->addMonths(3)){
+                                                $discount_percentage = .25;
+                                            }
+                                            
+                                            if($product->expiration < Carbon\Carbon::now()->addMonths(2)){
+                                                $discount_percentage = .35;
+                                            }
+                                            
+                                            if($product->expiration < Carbon\Carbon::now()->addMonths(1)){
+                                                $discount_percentage = .45;
+                                            }
+
+                                            if($product->expiration > Carbon\Carbon::now()->addMonths(3)){
+                                                $discount_percentage = 0;
+                                            }
+                                            $discounted = $regular_price * $discount_percentage;
+                                            
+                                        @endphp
+                                        <small class="fw-bolder text-danger">₱ {{$product->retailed_price ?? ''}}
+                                            @if($discounted > 0)
+                                             <br>(Less ₱ {{$discounted}}) 
+                                             @endif
+                                        </small>
                                         <!-- Product price-->
                                         
                                         
@@ -107,10 +189,11 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                                 <!-- Product name-->
                                 <h5 class="fw-bolder" id="product_name">Product Name</h5>
                                 <small class="fw-bolder" id="description">Description</small> <br>
-                                <small class="fw-bolder text-danger" id="price">Price: ₱ 150</small>
+                                <small class="fw-bolder text-danger" id="price">Price: ₱ 150</small> <br>
+                                <small class="fw-bolder text-danger" id="discounted">less</small> <br>
                                 <small class="fw-bolder text-danger" id="stock">Stock: 50</small>
                                 <br>
-                                <small class="fw-bolder text-danger" id="expiration">Expiration: 50</small>
+
                             </div>
                             
                             <div class="form-group mt-2">
@@ -145,9 +228,43 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
         </div>
     </div>
 </form>
+
+<footer style ="margin-top:1%">
+    <div class="container">
+    <div class= "row">
+        <div class="col-2 p-1 pt-3">
+            <img src="assets/img/logo.jfif" alt="" width = "80%">
+        </div>
+        <div class="col-3 p-1 pt-3">
+        <h1>{{ trans('panel.site_title') }}</h1>
+        <p>Petto Tomodachi Provides healthy, fun & delicious treats for your fur babies.</p >
+        </div>
+        <div class="col-3 p-3 pt-3">
+            <h1></h1>
+            <h1></h1>
+            <h1></h1>
+        </div>
+        <div class="col-3 p-3 pt-3">
+            <h3>Contact us</h3>
+            <a href="https://www.facebook.com/PettoTomodachiPH"><img src="assets/img/Facebook-logo.webp" alt="" style = "width:20%;margin-left:-11px;">Facebook</a>
+            <br>
+            <a href="https://www.instagram.com/p/CnslCcPrIxJ/"><img src="assets/img/instagram-Logo-PNG-Transparent-Background-download.webp" alt="" style = "width:14%;">Instagram</a>
+            <br>
+            <img src="assets/img/phone_logo.webp" alt="" style = "width:13%">+63-9516439050
+        </div>
+    </div>
+    </div>
+    <div class="copyright text-center text-sm text-dark text-lg-center">
+                © <script>
+                  document.write(new Date().getFullYear())
+                </script>,
+                Copyright {{ trans('panel.site_title') }} All Rights Reserved
+              </div>
+</footer>
 @endsection
 
 @section('script')
+<script src="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.9.0/slick.min.js"></script>
 <script>
     var product_id = null;
 
@@ -189,14 +306,29 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                     if(key == 'image'){
                         $('#image').attr("src", '/assets/img/products/' + value);
                     }
-                    if(key == 'exp'){
-                        if(value == 1){
-                            $('#promo').text("Buy 1 take 1")
+                    if(key == 'discounted'){
+                        if(value == '(Less 0)'){
+                            $('#discounted').text('')
                         }else{
+                            $('#discounted').text(value)
+                        }
+                        
+                    }
+                    if(key == 'exp'){
+                        if(value == 3){
+                            $('#promo').text("25 % OFF")
+                        }
+                        if(value == 2){
+                            $('#promo').text("35 % OFF")
+                        }
+                        if(value == 1){
+                            $('#promo').text("45 % OFF")
+                        }
+                        if(value == 0){
                             $('#promo').text("")
                         }
                     }
-                    if(key="isStar"){
+                    if(key == "isStar"){
                         $('#isStar').html('<i class="bi bi-star-fill text-warning"></i> ' + value);
                     }
                 })
@@ -232,6 +364,9 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                 $('#review_section').empty().append(reviews);
                 
             },
+            error:function(){
+                window.location.href = "/login";
+            } 
         })
 
     });
@@ -268,31 +403,32 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
                 if(data.errorstock){
                     $('#qty').addClass('is-invalid');
                     $('#error-qty').text(data.errorstock);
+                    
                 }
                 if(data.success){
                     $.confirm({
-                    title: 'Confirmation',
-                    content: data.success,
-                    type: 'green',
-                    buttons: {
-                            
-                            order: {
-                                text: 'Order Again',
-                                btnClass: 'btn-blue',
-                                keys: ['enter', 'shift'],
-                                action: function(){
-                                    location.reload();
-                                }
-                            },
+                        title: 'Confirmation',
+                        content: data.success,
+                        type: 'green',
+                        buttons: {
+                                
+                                order: {
+                                    text: 'Order Again',
+                                    btnClass: 'btn-blue',
+                                    keys: ['enter', 'shift'],
+                                    action: function(){
+                                        location.reload();
+                                    }
+                                },
 
-                            checkout: {
-                                text: 'Check Out',
-                                btnClass: 'btn-primary',
-                                action: function(){
-                                    window.location.href = "/customer/orders";
-                                }
-                            },
-                        }
+                                checkout: {
+                                    text: 'Check Out',
+                                    btnClass: 'btn-primary',
+                                    action: function(){
+                                        window.location.href = "/customer/orders";
+                                    }
+                                },
+                            }
                     });
                 }
                
@@ -383,6 +519,17 @@ background: linear-gradient(to right, #BB377D, #FBD3E9); /* W3C, IE 10+/ Edge, F
             });
     });
     
+
+    $('.single-item').slick({
+  		slidesToShow: 1,
+  		slidesToScroll: 1,
+  		arrows: true,
+  		fade: true,
+          dots: true,
+  		autoplay: true,
+  		autoplaySpeed: 1000,
+  		speed: 3000,
+	});
 </script>
 @endsection
 

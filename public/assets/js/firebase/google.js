@@ -26,7 +26,7 @@ $('#googleLogin').click(function(){
       success : function(data){
 
         if(data.status == "success"){
-          window.location.replace(URL + "/admin/profile");
+          window.location.replace(URL);
         }else{
           $('#text_warning').text('Something went wrong');
         }

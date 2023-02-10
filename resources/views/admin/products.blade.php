@@ -46,7 +46,8 @@
                                     <th scope="col">DESCRIPTION</th>
                                     <th scope="col">EXPIRATION</th>
                                     <th scope="col">STOCK</th>
-                                    <th scope="col">PRICE</th>
+                                    <th scope="col">UNIT PRICE</th>
+                                    <th scope="col">RETAILED PRICE</th>
                                     <th scope="col">CREATED AT</th>
                                 </tr>
                             </thead>
@@ -56,7 +57,7 @@
                                     <tr>
                                         <td>
                                             <button type="button" name="edit" edit="{{  $product->id ?? '' }}"  class="edit btn btn-sm btn-success btn-wd">Edit</button>
-                                            <br> <button type="button" name="remove" remove="{{  $product->id ?? '' }}" class="remove btn btn-sm btn-danger btn-wd">Remove</button>
+                                            
                                         </td>
                                         <td>
                                             {{  $product->id ?? '' }}
@@ -81,7 +82,10 @@
                                             {{ $product->stock ?? '' }}
                                         </td>
                                         <td>
-                                            {{ $product->price ?? '' }}
+                                            {{ $product->unit_price ?? '' }}
+                                        </td>
+                                        <td>
+                                            {{ $product->retailed_price ?? '' }}
                                         </td>
                                         <td>
                                             {{ $product->created_at->format('M j , Y h:i A') }}
@@ -151,16 +155,25 @@
                         </div>
                         <div class="col-sm-6">
                             <div class="form-group">
-                                <label class="form-label">Price: </label>
-                                <input type="number" name="price" id="price" class="form-control disabled" >
+                                <label class="form-label">Unit Price: </label>
+                                <input type="number" name="unit_price" id="unit_price" class="form-control disabled" >
                                 <span class="invalid-feedback" role="alert">
-                                    <strong id="error-price"></strong>
+                                    <strong id="error-unit_price"></strong>
                                 </span>
                             </div>
                         </div>
-                      
-
                         <div class="col-sm-6">
+                            <div class="form-group">
+                                <label class="form-label">Retailed Price: </label>
+                                <input type="number" name="retailed_price" id="retailed_price" class="form-control disabled" >
+                                <span class="invalid-feedback" role="alert">
+                                    <strong id="error-retailed_price"></strong>
+                                </span>
+                            </div>
+                        </div>
+
+
+                        <div class="col-sm-12">
                             <div class="form-group">
                                 <label class="form-label">Description: </label>
                                 <input type="text" name="description" id="description" class="form-control disabled" >

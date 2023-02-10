@@ -4,9 +4,7 @@ namespace App\Http\Controllers\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Models\Product;
-use App\Models\ProductSizePrice;
 use App\Models\Category;
-use App\Models\Size;
 use Illuminate\Http\Request;
 use Carbon\Carbon;
 use Validator;
@@ -23,11 +21,10 @@ class ProductController extends Controller
         if($userrole == 'admin'){
             date_default_timezone_set('Asia/Manila');
             
-            $products = Product::latest()->get();
+            $products = Product::latest()->where('isRemove', false)->get();
             $categories = Category::latest()->get();
-            $sizes = Size::latest()->get();
 
-            return view('admin.products', compact('products', 'categories', 'sizes'));
+            return view('admin.products', compact('products', 'categories'));
         }
         return abort('403');
     }
@@ -41,7 +38,8 @@ class ProductController extends Controller
             'image' =>  ['required' , 'mimes:png,jpg,jpeg,svg,bmp,ico', 'max:2040'],
             'expiration' => ['required','date', 'after:today'],
             'stock' => ['required','integer','min:1'],
-            'price' => ['required','integer','min:1'],
+            'retailed_price' => ['required','integer','min:1'],
+            'unit_price' => ['required','integer','min:1'],
         ]);
 
         if ($validated->fails()) {
@@ -59,7 +57,8 @@ class ProductController extends Controller
             'image' => $file_name_to_save,
             'expiration' => $request->input('expiration'),
             'stock' => $request->input('stock'),
-            'price' => $request->input('price'),
+            'retailed_price' => $request->input('retailed_price'),
+            'unit_price' => $request->input('unit_price'),
         ]);
 
 
@@ -81,6 +80,8 @@ class ProductController extends Controller
             'name' => ['required', 'string', 'max:255'],
             'category' => ['required'],
             'image' =>  ['mimes:png,jpg,jpeg,svg,bmp,ico', 'max:2040'],
+            'retailed_price' => ['required','integer','min:1'],
+            'unit_price' => ['required','integer','min:1'],
         ]);
 
         if ($validated->fails()) {
@@ -102,7 +103,12 @@ class ProductController extends Controller
 
         $product->name = $request->name;
         $product->category_id = $request->category;
-        $product->description = $request->description;
+        $product->description = $request->input('description');
+        $product->expiration = $request->input('expiration');
+        $product->stock = $request->input('stock');
+        $product->retailed_price = $request->input('retailed_price');
+        $product->unit_price = $request->input('unit_price');
+        
   
         $product->save();
 
@@ -113,7 +119,9 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         File::delete(public_path('assets/img/products/'.$product->image));
-        $product->delete();
+        $product->update([
+            'isRemve' => true,
+        ]);
         return response()->json(['success' =>  'Product Removed Successfully.']);
     }
 }

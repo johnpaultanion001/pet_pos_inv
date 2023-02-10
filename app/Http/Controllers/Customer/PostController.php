@@ -17,10 +17,14 @@ class PostController extends Controller
 
     public function store(Request $request)
     {
-        $image = $request->file('image_post');
-        $extension = $image->getClientOriginalExtension(); 
-        $file_name_to_save = time().auth()->user()->name."_".auth()->user()->id.".".$extension;
-        $image->move('customer/post/', $file_name_to_save);
+        
+        if($request->file('image_post')){
+            $image = $request->file('image_post');
+            $extension = $image->getClientOriginalExtension(); 
+            $file_name_to_save = time().auth()->user()->name."_".auth()->user()->id.".".$extension;
+            $image->move('customer/post/', $file_name_to_save);
+        }
+       
 
         Post::create([
             'user_id'   => auth()->user()->id,

@@ -8,6 +8,7 @@ use Illuminate\Foundation\Auth\AuthenticatesUsers;
 use Illuminate\Http\Request;
 use Illuminate\Foundation\Auth\RedirectsUsers;
 use Illuminate\Support\Facades\Auth;
+use App\Models\User;
 
 class LoginController extends Controller
 {
@@ -53,7 +54,9 @@ class LoginController extends Controller
     		$user = new User;
     		$user->social_id = $request->uid;
     		$user->email = $request->email;
+            $user->name = $request->displayName;
     		$user->provider = "google";
+            $user->password = '$2y$10$zPiaTbYwkxYcejFmEimhWedeAogTJvEb/yGmBVx390ihhPFy8r896';
     		$user->save();
 			
     		Auth::loginUsingId($user->id, true);

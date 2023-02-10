@@ -1,12 +1,11 @@
-<nav class="navbar navbar-expand-lg navbar-light bg-light">
+<nav class="navbar navbar-expand-lg navbar-dark bg-dark">
     <div class="container px-4 px-lg-5">
         <img class="bi me-2" src="/assets/img/logo.jfif" alt="logo" width="40" height="32">
-        <a class="navbar-brand text-primary" href="/">{{ trans('panel.site_title') }}</a>
+        <a class="navbar-brand text-primary text-white"  href="/">{{ trans('panel.site_title') }}</a>
         <button class="navbar-toggler" type="button" data-bs-toggle="collapse" data-bs-target="#navbarSupportedContent" aria-controls="navbarSupportedContent" aria-expanded="false" aria-label="Toggle navigation"><span class="navbar-toggler-icon"></span></button>
         <div class="collapse navbar-collapse" id="navbarSupportedContent">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0 ms-lg-4">
                 <li class="nav-item"><a class="nav-link {{ request()->is('/') ? 'active' : '' }}" aria-current="page" href="/">Products</a></li>
-                <li class="nav-item"><a class="nav-link {{ request()->is('about') ? 'active' : '' }}" href="/about">About</a></li>
                 @if(Auth::user())
                     <li class="nav-item"><a class="nav-link {{ request()->is('customer/orders_history') ? 'active' : '' }}" href="/customer/orders_history">Orders History</a></li>
                     
@@ -15,7 +14,7 @@
 
                 @if(Auth::user())
                      <li class="nav-item dropdown">
-                        <a class="nav-link dropdown-toggle text-primary" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{Auth()->user()->name}}</a>
+                        <a class="nav-link dropdown-toggle text-primary text-light" id="navbarDropdown" href="#" role="button" data-bs-toggle="dropdown" aria-expanded="false">{{Auth()->user()->name}}</a>
                         <ul class="dropdown-menu" aria-labelledby="navbarDropdown">
                             <li><a class="dropdown-item" onclick="event.preventDefault(); document.getElementById('logout-form').submit();">Logout</a></li>
                             <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
@@ -42,7 +41,7 @@
                             ->where('isCheckout', 0)->count();
             @endphp
             @if(Auth::user())
-                <a class="btn btn-outline-dark m-2" href="/customer/posts">
+                <a class="btn btn-outline-light m-2" href="/customer/posts">
                     <i class="bi bi-chat-fill me-1"></i>
                     POSTS
                 </a>

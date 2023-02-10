@@ -14,7 +14,7 @@ class CategoryController extends Controller
         $userrole = auth()->user()->role;
         if($userrole == 'admin'){
             date_default_timezone_set('Asia/Manila');
-            $categories = Category::latest()->get();
+            $categories = Category::latest()->where('isRemove', false)->get();
 
             return view('admin.categories', compact('categories'));
         }
@@ -76,7 +76,9 @@ class CategoryController extends Controller
    
     public function destroy(Category $category)
     {
-        $category->delete();
+        $category->update([
+            'isRemve' => true,
+        ]);
         return response()->json(['success' =>  'Removed Successfully.']);
     }
 }
