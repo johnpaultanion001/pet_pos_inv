@@ -109,10 +109,10 @@
                             </tbody>
                             <tfoot class="thead-light">
                                 <tr>
+                                    <th>USER:</th>
+                                    <th>{{auth()->user()->name}}</th>
+                                    <th></th>
                                     <th>TOTAL:</th>
-                                    <th></th>
-                                    <th></th>
-                                    <th></th>
                                     <th>TOTAL SOLD</th>
                                     <th>TOTAL DISCOUNTED</th>
                                     <th>TOTAL AMOUNT</th>
@@ -142,7 +142,7 @@
 
 
 @section('script')
-<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js">
+<script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.9.4/Chart.js"></script>
 <script src="{{ asset('js/chart.js') }}"></script>
 <script> 
 
@@ -237,7 +237,6 @@ $(function () {
 
 });
 
-
 $('#filter_dd').on("change", function(event){
         var date = $(this).val();
 
@@ -257,6 +256,9 @@ $('.btn_filter_date').on("click", function(event){
             window.location.href = '/admin/sales_reports/fbd/'+from+'/'+to;
         }
 });
+
+
+
 
 
 
